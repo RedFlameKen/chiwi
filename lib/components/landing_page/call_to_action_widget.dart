@@ -33,20 +33,17 @@ class CallToActionWidget extends StatelessWidget {
         Expanded(
           child: Container(
             alignment: AlignmentGeometry.center,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ChiwiColors.MATCHA,
-                padding: .only(
-                  top: 25,
-                  bottom: 25,
-                  left: 150,
-                  right: 150,
+            child: FittedBox(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ChiwiColors.MATCHA,
+                  padding: .only(top: 25, bottom: 25, left: 150, right: 150),
                 ),
-              ),
-              onPressed: () {},
-              child: Text(
-                "Get Started",
-                style: TextStyle(color: ChiwiColors.ALMOND, fontSize: 36),
+                onPressed: () {},
+                child: Text(
+                  "Get Started",
+                  style: TextStyle(color: ChiwiColors.ALMOND, fontSize: 36),
+                ),
               ),
             ),
           ),
