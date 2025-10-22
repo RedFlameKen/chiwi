@@ -3,7 +3,7 @@
 Voice-controlled reviewer that users can use to quiz themselves and quiz others
 
 ## Prerequisites
-- [ ] Flutter SDK
+- Flutter SDK
 
 ## Running
 The primary target platform this application targets is `web`. To run the app
