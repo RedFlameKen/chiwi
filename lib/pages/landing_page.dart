@@ -1,3 +1,4 @@
+import 'package:chiwi/components/landing_page/call_to_action_widget.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -23,57 +24,7 @@ class LandingPage extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: ctaHeight,
-                    child: FittedBox(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Image(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://i.imgflip.com/77e8vi.png",
-                            ),
-                          ),
-                          Text("CHIWI AI", style: TextStyle(fontSize: 50)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    alignment: AlignmentGeometry.center,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ChiwiColors.MATCHA,
-                        padding: EdgeInsetsGeometry.only(
-                          top: 25,
-                          bottom: 25,
-                          left: 150,
-                          right: 150,
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Get Started",
-                        style: TextStyle(
-                          color: ChiwiColors.ALMOND,
-                          fontSize: 36,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            CallToActionWidget(height: ctaHeight),
             Text("breh"),
           ],
         ),
