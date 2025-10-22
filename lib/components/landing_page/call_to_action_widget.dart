@@ -8,20 +8,20 @@ class CallToActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: .min,
+      mainAxisAlignment: .spaceEvenly,
+      crossAxisAlignment: .center,
       children: [
         Expanded(
           child: SizedBox(
             height: height,
             child: FittedBox(
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: .min,
+                mainAxisAlignment: .spaceAround,
                 children: [
                   Image(
-                    fit: BoxFit.cover,
+                    fit: .cover,
                     image: NetworkImage("https://i.imgflip.com/77e8vi.png"),
                   ),
                   Text("CHIWI AI", style: TextStyle(fontSize: 50)),
@@ -36,7 +36,7 @@ class CallToActionWidget extends StatelessWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: ChiwiColors.MATCHA,
-                padding: EdgeInsetsGeometry.only(
+                padding: .only(
                   top: 25,
                   bottom: 25,
                   left: 150,
