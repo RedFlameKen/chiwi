@@ -1,4 +1,4 @@
-import 'package:chiwi/components/landing_page/call_to_action_widget.dart';
+import 'package:chiwi/components/landing_page/call_to_action_widget_for_loginsignup.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -7,15 +7,10 @@ class LoginOrSignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: Text("CHIWI AI", style: TextStyle(fontWeight: FontWeight.bold)),
-      backgroundColor: ChiwiColors.CHAI,
-    );
+  
     final screenHeight = MediaQuery.of(context).size.height;
-    final appBarHeight = appBar.preferredSize.height;
-    final ctaHeight = screenHeight - appBarHeight;
+    final ctaHeight = screenHeight;
     return Scaffold(
-      appBar: appBar,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -24,13 +19,11 @@ class LoginOrSignupPage extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            CallToActionWidget(height: ctaHeight),
-            Text("breh"),
+            CallToActionWidget(height: ctaHeight), //remind me to rename this class to something else to prevent confusion
+            Text("There was a youtube link here. Its gone now"),
           ],
         ),
       ),
     );
   }
 }
-
-//Just copy pasted landing_page.dart for now
