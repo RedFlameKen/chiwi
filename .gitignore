@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ignoreing analysis_options.yaml to not enforce preferences
+analysis_options.yaml
