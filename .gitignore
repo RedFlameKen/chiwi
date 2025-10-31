@@ -49,3 +49,6 @@ analysis_options.yaml
 
 ### Neovim ###
 .ignore
+
+### Config ###
+keys.json
