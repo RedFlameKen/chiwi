@@ -9,17 +9,15 @@ void main(){
 
 void testEncryption(){
   String message = "I choose you";
-  List<int>? iv;
-  List<int>? salt;
+  String? saltIv;
   String? encrypted;
   test("test encryption utility", () async {
     Encryptor encryptor = Encryptor();
-    salt = encryptor.salt!;
-    iv = encryptor.iv!;
+    saltIv = encryptor.getSaltIv();
     encrypted = await encryptor.encrypt(message);
   });
   test("test decryption utility", () async {
-    Decryptor decryptor = Decryptor(salt: salt, iv: iv);
+    Decryptor decryptor = Decryptor(saltIv!);
     String decrypted = await decryptor.decrypt(encrypted!);
     expect(decrypted, message);
   });

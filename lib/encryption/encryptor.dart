@@ -23,5 +23,11 @@ class Encryptor extends Encryption {
     Uint8List encrypted = secretBox.concatenation(nonce: false);
     return base64.encode(encrypted);
   }
+
+  String getSaltIv(){
+    String saltStr = base64.encode(salt!);
+    String ivStr = base64.encode(iv!);
+    return "$saltStr$ivStr";
+  }
   
 }
