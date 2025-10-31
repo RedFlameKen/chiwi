@@ -43,51 +43,83 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
     //insert code for checking if the answer is correct here
   }
 
-  void displayScore(){
+  void displayScore() {
     //yeah self explanatory
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //I can't for the life of me do frontend in flutter I'd rather be doing logic
-      height: MediaQuery.of(context).size.height,
-      width: 300,
-      child: Column(
-        children: [
-          Text("B̶i̶g̶ ̶B̶r̶o̶t̶h̶e̶r̶  Chiwi is listening"),
-          Container(height: 25),
-          Text(quiz[index]),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(color: ChiwiColors.ALMOND),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              //this is the green widget
+              // width: MediaQuery.of(context).size.width / 2,
+              width: 498, //overflowed for some reason. temporary fix for now
+              color: ChiwiColors.MATCHA,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: ChiwiColors.ALMOND,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          //question display
+                          quiz[index],
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ChiwiColors.VANILLA,
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: loadQuestions,
+                          child: Text("Next Question"),
+                        ),
 
-          SizedBox(height: 20), //change buttons to match style of Chiwi
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ChiwiColors.MATCHA,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ChiwiColors.VANILLA,
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            answerRecorder();
+                            checkAnswer();
+                          },
+                          child: Text("Record Answer"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            onPressed: loadQuestions,
-            child: Text("Next Question"),
-          ),
-
-           SizedBox(height: 20),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ChiwiColors.MATCHA,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: (){
-              answerRecorder();
-              checkAnswer();
-            },
-            child: Text("Record Answer"),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

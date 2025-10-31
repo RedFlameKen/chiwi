@@ -33,12 +33,12 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
       children: [
         Container(
           height: MediaQuery.of(context).size.height,
-          width: 20,
+          width: 30,
           child: LinearProgressIndicator(
             //value: (_currentQuestionIndex + 1) / questions.length,
             value: _value,
-            backgroundColor: ChiwiColors.MATCHA,
-            valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.CHAI),
+            backgroundColor: ChiwiColors.SERENE_2,
+            valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
           ),
         ),
       ],
