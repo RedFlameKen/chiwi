@@ -1,4 +1,5 @@
 //I've fucked this up tremendously I'll just fix it tomorrow or some other day
+import 'package:chiwi/pages/quiz_page.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +28,12 @@ class CallToActionWidget extends StatelessWidget { //remind me to rename this cl
                 ),
               ),
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //    MaterialPageRoute(
-                //     builder: (context) => LoginPage(), 
-                //     ),
-                //     );
+                Navigator.push(
+                  context,
+                   MaterialPageRoute(
+                    builder: (context) => QuizPage(), //temporary for testing
+                    ),
+                    );
               },
               child: Text(
                 "Log In",
