@@ -7,10 +7,32 @@ class ReviewListenerWidget extends StatefulWidget {
 }
 
 class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
-  String question = "";
+  final String question0 = "Sino ang pumatay kay Lapu-Lapu?";
+  final String question1 =
+      "Rambo III was dedicated to this militant organization that went on to commit one of the most infamous terrorist attacks of the 21st century";
 
-  void loadQuestion() {
-    //insert code for fetching questions here
+  final String answer0 = "Hindi ako sir";
+  final String answer1 = "Al Qaeda";
+  //temporary questions and answers for testing
+
+  List<String> quiz = [];
+  int index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    loadQuiz();
+  }
+
+  void loadQuiz() {
+    quiz = [question0, question1];
+    setState(() {});
+  }
+
+  void loadQuestions() {
+    for (index; index < quiz.length - 1; index++) {
+      setState(() {});
+    }
   }
 
   void answerRecorder() {
@@ -18,7 +40,11 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   }
 
   void checkAnswer() {
-    //insert code for checking if the answer is correct here. If we plan to add animations it should also be here
+    //insert code for checking if the answer is correct here
+  }
+
+  void displayScore(){
+    //yeah self explanatory
   }
 
   @override
@@ -29,7 +55,38 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
       width: 300,
       child: Column(
         children: [
-          Text("B̶i̶g̶ ̶B̶r̶o̶t̶h̶e̶r̶  Chiwi is listening")
+          Text("B̶i̶g̶ ̶B̶r̶o̶t̶h̶e̶r̶  Chiwi is listening"),
+          Container(height: 25),
+          Text(quiz[index]),
+
+          SizedBox(height: 20), //change buttons to match style of Chiwi
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ChiwiColors.MATCHA,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: loadQuestions,
+            child: Text("Next Question"),
+          ),
+
+           SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ChiwiColors.MATCHA,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: (){
+              answerRecorder();
+              checkAnswer();
+            },
+            child: Text("Record Answer"),
+          ),
         ],
       ),
     );
