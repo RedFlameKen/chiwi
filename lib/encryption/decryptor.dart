@@ -6,7 +6,11 @@ import 'encryption.dart';
 
 class Decryptor extends Encryption {
 
-  Decryptor({required super.salt, required super.iv});
+  Decryptor(String saltIv)
+    : super(
+        salt: base64.decode(saltIv.substring(0, 24)),
+        iv: base64.decode(saltIv.substring(24, 48)),
+      );
 
   Future<String> decrypt(String data) async {
     await initKey();
