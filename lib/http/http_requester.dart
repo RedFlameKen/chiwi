@@ -106,7 +106,7 @@ class HttpRequester {
 
   static Future<Response> delete({
     required String path,
-    required Object body,
+    Object? body,
     String? host,
     int? port,
     Map<String, String>? headers,
@@ -140,7 +140,7 @@ class HttpRequester {
     dynamic data;
     String? message;
 
-    if (httpResponse.headers["Content-Type"] == "application/json") {
+    if (httpResponse.headers["content-type"] == "application/json") {
       Map<String, dynamic> responseBody = jsonDecode(httpResponse.body);
       data = responseBody["data"];
       message = responseBody["message"];
@@ -150,7 +150,7 @@ class HttpRequester {
 
     Response response = ResponseBuilder()
         .status(httpResponse.statusCode)
-        .message(message ?? "")
+        .message(message ?? "default message")
         .data(data)
         .build();
 
