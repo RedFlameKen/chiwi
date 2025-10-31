@@ -1,4 +1,5 @@
 import 'package:chiwi/pages/landing_page.dart';
+import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LandingPage()
+      //home: const LandingPage()//changed this for testing purposes
+      home: const ReviwermakerPage()
     );
   }
 }
