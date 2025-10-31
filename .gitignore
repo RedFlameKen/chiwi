@@ -46,3 +46,6 @@ app.*.map.json
 
 ### Neovim ###
 .ignore
+
+### Config ###
+keys.json

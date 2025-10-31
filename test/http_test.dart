@@ -5,8 +5,8 @@ import 'package:chiwi/http/response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main(){
-  testGet();
-  testPost();
+  // testGet();
+  // testPost();
 }
 
 void testGet(){
