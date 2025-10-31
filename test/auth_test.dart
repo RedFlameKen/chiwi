@@ -6,13 +6,14 @@ import 'package:flutter_test/flutter_test.dart';
 const String USERNAME = "TestUser";
 const String PASSWORD = "testpassword1234";
 
-void main()async{
-  await testSignup();
-  await testLogin();
-  await testSignout();
+void main(){
+  testSignup();
+  testLogout();
+  testLogin();
+  testSignout();
 }
 
-Future<void> testSignup()async{
+void testSignup(){
   test("Test Signup request", () async {
     await AccountManager.INSTANCE.signup(username: USERNAME, password: PASSWORD, 
       onSuccess: (message) {
@@ -24,7 +25,7 @@ Future<void> testSignup()async{
   });
 }
 
-Future<void> testLogin()async{
+void testLogin(){
   test("Test Login request", () async {
     await AccountManager.INSTANCE.loginWithUsernameAndPassword(
       username: USERNAME,
@@ -39,7 +40,30 @@ Future<void> testLogin()async{
   });
 }
 
-Future<void> testSignout()async{
+void testLogout(){
+  test("Test Logout request", () async{
+    await AccountManager.INSTANCE.loginWithUsernameAndPassword(
+      username: USERNAME,
+      password: PASSWORD, 
+      onSuccess: (message) {
+        log("logged in! message: ${message!}");
+      }, 
+      onFail: (message) {
+        fail("failed to login! message: ${message!}");
+      });
+    await AccountManager.INSTANCE.logout(
+      onSuccess: (message) {
+        log("logged out! message: ${message!}");
+      },
+      onFail: (message) {
+        fail("failed to logout! message: ${message!}");
+      }
+    );
+    expect(AccountManager.INSTANCE.user, null);
+  });
+}
+
+void testSignout(){
   test("Test Signout request", () async {
     await AccountManager.INSTANCE.signout(
       onSuccess: (message) {

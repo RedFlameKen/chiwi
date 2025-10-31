@@ -8,6 +8,7 @@ class AccountManager {
 
   static final INSTANCE = AccountManager();
   static const LOGIN_PATH = "/login";
+  static const LOGOUT_PATH = "/logout";
   static const SIGNUP_PATH = "/signup";
   static const SIGNOUT_PATH = "/signout";
 
@@ -99,5 +100,30 @@ class AccountManager {
     user = User(username: data["username"], auth_token: data["auth_token"]);
     onSuccess!(response.message);
   }
-  
+
+  Future<void> logout({
+    Function(String? message)? onSuccess,
+    Function(String? message)? onFail,
+  }) async {
+    if(user == null){
+      onFail!("not logged in");
+      return;
+    }
+
+    Map<String, String> headers = {
+      "Authorization": "Bearer ${user!.auth_token}",
+    };
+    Response response = await HttpRequester.get(
+      path: LOGOUT_PATH,
+      headers: headers,
+    );
+
+    if(response.status != 200){
+      onFail!(response.message);
+      return;
+    }
+    user = null;
+    onSuccess!(response.message);
+  }
+
 }

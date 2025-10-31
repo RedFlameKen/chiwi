@@ -150,7 +150,7 @@ class HttpRequester {
 
     Response response = ResponseBuilder()
         .status(httpResponse.statusCode)
-        .message(message ?? "default message")
+        .message(message ?? "no message")
         .data(data)
         .build();
 
