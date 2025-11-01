@@ -33,8 +33,9 @@ class ReviwermakerPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
-                          //text display
-                          'this is to display the inputs and response',
+                          //replace this with function to show inputs
+                          //text display 
+                          'Display Inputs',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -45,7 +46,7 @@ class ReviwermakerPage extends StatelessWidget {
                     child: TextField(
                       //tex input box
                       decoration: InputDecoration(
-                        hintText: 'This is a test...',
+                        hintText: 'Type Questions here..',
                         filled: true,
                         fillColor: ChiwiColors.ALMOND,
                         contentPadding: EdgeInsets.symmetric(
@@ -66,9 +67,20 @@ class ReviwermakerPage extends StatelessWidget {
                       //insert functions here
                     },
                   ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
+            Expanded(
+              //chiwi
+              flex: 3,
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: Image.network(
+                  'https://i.imgflip.com/77e8vi.png',
+                )
+              ),
+            )
           ],
         ),
       ),

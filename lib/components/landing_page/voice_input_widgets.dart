@@ -22,7 +22,7 @@ class VoiceInputWidgets extends StatelessWidget{
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightGreenAccent,//button color
                 foregroundColor: Colors.black,//text color
-                padding: EdgeInsets.symmetric(vertical: 50),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 textStyle: TextStyle(fontSize: 20)
                 ),
               child: Text('Chiwi Listen'),
@@ -37,13 +37,13 @@ class VoiceInputWidgets extends StatelessWidget{
               style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,//button color
               foregroundColor: Colors.white,//text color
-              padding: EdgeInsets.symmetric(vertical: 50),
+              padding: EdgeInsets.symmetric(vertical: 15),
               textStyle: TextStyle(fontSize: 20)
               ),
               child: Text('Chiwi Stop'),
             )
           )
-        )
+        ),
       ],
     );
   }
