@@ -58,17 +58,17 @@ class ReviwermakerPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  VoiceInputWidgets(
+                    listenButton: () {
+                      //insert functions here
+                    },
+                    stopButton: () {
+                      //insert functions here
+                    },
+                  ),
                 ],
               ),
             ),
-            VoiceInputWidgets(
-              listenButton: () {
-                //insert functions here
-              }, 
-              stopButton: () {
-                //insert functions here
-              }
-            )
           ],
         ),
       ),
