@@ -1,6 +1,6 @@
 import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/landing_page/login_signup_widget.dart';
-import 'package:chiwi/style/colors.dart';
+import 'package:chiwi/pages/templates/two_section_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrSignupPage extends StatelessWidget {
@@ -8,41 +8,17 @@ class LoginOrSignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: ChiwiColors.ALMOND,
-        child: Container(
-          margin: EdgeInsets.all(15),
-          color: ChiwiColors.SERENE_3,
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: .infinity,
-                  margin: EdgeInsets.all(15),
-                  color: ChiwiColors.ALMOND,
-                  child: Column(
-                    mainAxisSize: .max,
-                    mainAxisAlignment: .center,
-                    children: [
-                      Spacer(flex: 1),
-                      Expanded(flex: 2, child: LoginSignupWidget()),
-                      Spacer(flex: 1),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  alignment: .bottomCenter,
-                  margin: EdgeInsets.all(15),
-                  child: ChiwiWidget()
-                )
-              ),
-            ],
-          ),
-        ),
+    return TwoSectionPage(
+      leftChild: Column(
+        mainAxisSize: .max,
+        mainAxisAlignment: .center,
+        children: [
+          Spacer(flex: 1),
+          Expanded(flex: 2, child: LoginSignupWidget()),
+          Spacer(flex: 1),
+        ],
       ),
+      rightChild: ChiwiWidget(),
     );
   }
 }
