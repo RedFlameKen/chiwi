@@ -1,3 +1,4 @@
+import 'package:chiwi/components/landing_page/voice_input_widgets.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class ReviwermakerPage extends StatelessWidget {
                     child: SizedBox(
                       width: double.infinity,
                       child: Container(
-                        margin: EdgeInsets.all(8),
+                        margin: EdgeInsets.all(12),
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: ChiwiColors.ALMOND,
@@ -42,6 +43,7 @@ class ReviwermakerPage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.all(8),
                     child: TextField(
+                      //tex input box
                       decoration: InputDecoration(
                         hintText: 'This is a test...',
                         filled: true,
@@ -59,6 +61,14 @@ class ReviwermakerPage extends StatelessWidget {
                 ],
               ),
             ),
+            VoiceInputWidgets(
+              listenButton: () {
+                //insert functions here
+              }, 
+              stopButton: () {
+                //insert functions here
+              }
+            )
           ],
         ),
       ),

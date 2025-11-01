@@ -1,4 +1,3 @@
-import 'package:chiwi/pages/landing_page.dart';
 import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
