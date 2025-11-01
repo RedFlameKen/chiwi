@@ -1,8 +1,10 @@
+import 'package:chiwi/enum/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
 
 class ProgressBarWidget extends StatefulWidget {
-  const ProgressBarWidget({super.key});
+  final Direction direction;
+  const ProgressBarWidget({super.key, this.direction = .horizontal});
 
   @override
   State<ProgressBarWidget> createState() => _ProgressBarWidgetState();
@@ -10,6 +12,8 @@ class ProgressBarWidget extends StatefulWidget {
 
 class _ProgressBarWidgetState extends State<ProgressBarWidget> {
   double _value = 0;
+
+  _ProgressBarWidgetState();
 
   void setValue(double value) {
     setState(() {
@@ -27,21 +31,34 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
     return _value;
   }
 
+  Widget createProgressIndicator(){
+    return Expanded(
+      child: LinearProgressIndicator(
+        minHeight: 30,
+        //value: (_currentQuestionIndex + 1) / questions.length,
+        value: _value,
+        backgroundColor: ChiwiColors.SERENE_2,
+        valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
+      ),
+    );
+  }
+
+  Widget buildBar(){
+    Widget bar = createProgressIndicator();
+    Direction direction = widget.direction;
+    switch (direction) {
+      case Direction.vertical:
+        return RotatedBox(
+          quarterTurns: -1,
+          child: bar,
+        );
+      case Direction.horizontal:
+        return bar;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height,
-          width: 30,
-          child: LinearProgressIndicator(
-            //value: (_currentQuestionIndex + 1) / questions.length,
-            value: _value,
-            backgroundColor: ChiwiColors.SERENE_2,
-            valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
-          ),
-        ),
-      ],
-    );
+    return buildBar();
   }
 }
