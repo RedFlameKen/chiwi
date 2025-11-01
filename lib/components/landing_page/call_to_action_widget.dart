@@ -34,27 +34,25 @@ class CallToActionWidget extends StatelessWidget {
         Expanded(
           child: Container(
             alignment: AlignmentGeometry.center,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ChiwiColors.MATCHA,
-                padding: .only(
-                  top: 25,
-                  bottom: 25,
-                  left: 150,
-                  right: 150,
+            child: FittedBox(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ChiwiColors.MATCHA,
+                  padding: .only(top: 25, bottom: 25, left: 150, right: 150),
                 ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                   MaterialPageRoute(
-                    builder: (context) => LoginOrSignupPage(), //might need to change this so the button can be reused for other stuff
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          LoginOrSignupPage(), //might need to change this so the button can be reused for other stuff
                     ),
-                    );
-              },
-              child: Text(
-                "Get Started",
-                style: TextStyle(color: ChiwiColors.ALMOND, fontSize: 36),
+                  );
+                },
+                child: Text(
+                  "Get Started",
+                  style: TextStyle(color: ChiwiColors.ALMOND, fontSize: 36),
+                ),
               ),
             ),
           ),
