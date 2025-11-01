@@ -10,30 +10,37 @@ class LoginOrSignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [ChiwiColors.VANILLA, ChiwiColors.ALMOND],
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: .infinity,
-                color: ChiwiColors.ALMOND,
-                child: Column(
-                  mainAxisSize: .max,
-                  mainAxisAlignment: .center,
-                  children: [
-                    Spacer(flex: 1),
-                    Expanded(flex: 2, child: LoginSignupWidget()),
-                    Spacer(flex: 1),
-                  ],
+        color: ChiwiColors.ALMOND,
+        child: Container(
+          margin: EdgeInsets.all(15),
+          color: ChiwiColors.SERENE_3,
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: .infinity,
+                  margin: EdgeInsets.all(15),
+                  color: ChiwiColors.ALMOND,
+                  child: Column(
+                    mainAxisSize: .max,
+                    mainAxisAlignment: .center,
+                    children: [
+                      Spacer(flex: 1),
+                      Expanded(flex: 2, child: LoginSignupWidget()),
+                      Spacer(flex: 1),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Expanded(child: ChiwiWidget()),
-          ],
+              Expanded(
+                child: Container(
+                  alignment: .bottomCenter,
+                  margin: EdgeInsets.all(15),
+                  child: ChiwiWidget()
+                )
+              ),
+            ],
+          ),
         ),
       ),
     );
