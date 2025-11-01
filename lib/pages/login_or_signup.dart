@@ -1,4 +1,5 @@
-import 'package:chiwi/components/landing_page/call_to_action_widget_for_loginsignup.dart';
+import 'package:chiwi/components/landing_page/chiwi_widget.dart';
+import 'package:chiwi/components/landing_page/login_signup_widget.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,6 @@ class LoginOrSignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
-    final screenHeight = MediaQuery.of(context).size.height;
-    final ctaHeight = screenHeight;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -17,10 +15,24 @@ class LoginOrSignupPage extends StatelessWidget {
             colors: [ChiwiColors.VANILLA, ChiwiColors.ALMOND],
           ),
         ),
-        child: ListView(
+        child: Row(
           children: [
-            CallToActionWidget(height: ctaHeight), //remind me to rename this class to something else to prevent confusion
-            Text("There was a youtube link here. Its gone now"),
+            Expanded(
+              child: Container(
+                height: .infinity,
+                color: ChiwiColors.ALMOND,
+                child: Column(
+                  mainAxisSize: .max,
+                  mainAxisAlignment: .center,
+                  children: [
+                    Spacer(flex: 1),
+                    Expanded(flex: 2, child: LoginSignupWidget()),
+                    Spacer(flex: 1),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(child: ChiwiWidget()),
           ],
         ),
       ),
