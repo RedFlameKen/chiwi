@@ -4,18 +4,26 @@ import 'package:chiwi/style/colors.dart';
 import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/quiz_page/review_listener_widget.dart';
 
-class QuizPage extends StatelessWidget{
+class QuizPage extends StatelessWidget {
   const QuizPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(child: ReviewListenerWidget()),
-        Expanded(child: ProgressBarWidget()),
-        Expanded(child: ChiwiWidget())
-      ],
+    return Scaffold(
+      body: Row(
+        children: [
+          Expanded(
+            child: Row(
+              mainAxisSize: .max,
+              children: [
+                Expanded(child: ReviewListenerWidget()),
+                ProgressBarWidget(direction: .vertical),
+              ],
+            ),
+          ),
+          Expanded(child: ChiwiWidget()),
+        ],
+      ),
     );
   }
-
 }
