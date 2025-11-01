@@ -1,4 +1,4 @@
-import 'package:chiwi/components/landing_page/chiwi_widget.dart';
+import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/landing_page/login_signup_widget.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
