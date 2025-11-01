@@ -1,3 +1,4 @@
+import 'package:chiwi/pages/signup_page.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -35,12 +36,10 @@ class LoginSignupWidget extends StatelessWidget {
             padding: .only(top: 25, bottom: 25, left: 150, right: 150),
           ),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //    MaterialPageRoute(
-            //     builder: (context) => SignupPage(),
-            //     ),
-            //     );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignupPage()),
+            );
           },
           child: Text(
             "Sign Up",
