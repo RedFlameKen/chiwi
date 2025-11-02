@@ -25,11 +25,9 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    print("signing up");
     Encryptor encryptor = Encryptor();
     String saltIv = encryptor.getSaltIv();
     String encrypted = await encryptor.encrypt(password);
-    print("encrypted");
 
     String body = UserRequestData(
       username: username,
