@@ -8,29 +8,40 @@ class HttpRequester {
   static const DEFAULT_HOST = "localhost";
 
   static Uri createUri({
+    bool https = false,
     String? host,
     int? port,
+    bool noPort = false,
     String path = "/",
     Map<String, dynamic>? queryParams,
   }) {
-    host ??= DEFAULT_HOST;
+    host ??=  DEFAULT_HOST;
     if (port == null || port < 0) {
       port = DEFAULT_PORT;
     }
-    host += ":$port";
-    return Uri.http(host, path, queryParams);
+    if(!noPort){
+      host += ":$port";
+    }
+    if(https)
+      return Uri.https(host, path, queryParams);
+    else
+      return Uri.http(host, path, queryParams);
   }
 
   static Future<Response> get({
     required String path,
+    bool https = false,
     String? host,
     int? port,
+    bool noPort = false,
     Map<String, String>? headers,
     Map<String, dynamic>? queryParams,
   }) async {
     Uri uri = createUri(
+      https: https,
       host: host,
       port: port,
+      noPort: noPort,
       path: path,
       queryParams: queryParams,
     );
@@ -43,14 +54,18 @@ class HttpRequester {
   static Future<Response> post({
     required String path,
     required Object body,
+    bool https = false,
     String? host,
     int? port,
+    bool noPort = false,
     Map<String, String>? headers,
     Map<String, dynamic>? queryParams,
   }) async {
     Uri uri = createUri(
+      https: https,
       host: host,
       port: port,
+      noPort: noPort,
       path: path,
       queryParams: queryParams,
     );
@@ -75,14 +90,18 @@ class HttpRequester {
   static Future<Response> put({
     required String path,
     required Object body,
+    bool https = false,
     String? host,
     int? port,
+    bool noPort = false,
     Map<String, String>? headers,
     Map<String, dynamic>? queryParams,
   }) async {
     Uri uri = createUri(
+      https: https,
       host: host,
       port: port,
+      noPort: noPort,
       path: path,
       queryParams: queryParams,
     );
@@ -106,15 +125,19 @@ class HttpRequester {
 
   static Future<Response> delete({
     required String path,
+    bool https = false,
     Object? body,
     String? host,
     int? port,
+    bool noPort = false,
     Map<String, String>? headers,
     Map<String, dynamic>? queryParams,
   }) async {
     Uri uri = createUri(
+      https: https,
       host: host,
       port: port,
+      noPort: noPort,
       path: path,
       queryParams: queryParams,
     );
