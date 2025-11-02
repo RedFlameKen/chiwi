@@ -5,12 +5,15 @@ import 'package:chiwi/http/requests/user_request_data.dart';
 import 'package:chiwi/http/response.dart';
 
 class AccountManager {
-
   static final INSTANCE = AccountManager();
   static const LOGIN_PATH = "/login";
   static const LOGOUT_PATH = "/logout";
   static const SIGNUP_PATH = "/signup";
   static const SIGNOUT_PATH = "/signout";
+
+  static const BACKEND_SERVER_HOST = "thinkpad-x230.taila38b71.ts.net";
+  static const USE_HTTPS = true;
+  static const HOST_HAS_PORT = false;
 
   User? user;
 
@@ -21,11 +24,12 @@ class AccountManager {
     required String password,
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
-    }
-  ) async {
+  }) async {
+    print("signing up");
     Encryptor encryptor = Encryptor();
     String saltIv = encryptor.getSaltIv();
     String encrypted = await encryptor.encrypt(password);
+    print("encrypted");
 
     String body = UserRequestData(
       username: username,
@@ -33,15 +37,24 @@ class AccountManager {
       saltIv: saltIv,
     ).toJson();
 
-    Response response = await HttpRequester.post(path: SIGNUP_PATH, body: body);
-
-    if(response.status != 200){
-      onFail!(
-        "failed to signup! status code: ${response.status} message: ${response.message}"
+    Response response;
+    try {
+      response = await HttpRequester.post(
+        https: USE_HTTPS,
+        host: BACKEND_SERVER_HOST,
+        noPort: !HOST_HAS_PORT,
+        path: SIGNUP_PATH,
+        body: body,
       );
+    } catch (e) {
+      onFail!("connection failed! $e");
       return;
     }
 
+    if (response.status != 200) {
+      onFail!("${response.message}");
+      return;
+    }
     onSuccess!(response.message);
   }
 
@@ -49,7 +62,7 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    if(user == null){
+    if (user == null) {
       onFail!("not logged in yet");
       return;
     }
@@ -57,12 +70,21 @@ class AccountManager {
     Map<String, String> headers = {
       "Authorization": "Bearer ${user!.auth_token}",
     };
-    Response response = await HttpRequester.delete(
-      path: SIGNOUT_PATH,
-      headers: headers,
-    );
+    Response response;
+    try {
+      response = await HttpRequester.delete(
+        https: USE_HTTPS,
+        host: BACKEND_SERVER_HOST,
+        noPort: !HOST_HAS_PORT,
+        path: SIGNOUT_PATH,
+        headers: headers,
+      );
+    } catch (e) {
+      onFail!("connection failed! $e");
+      return;
+    }
 
-    if(response.status != 200){
+    if (response.status != 200) {
       onFail!(response.message);
       return;
     }
@@ -86,14 +108,26 @@ class AccountManager {
       saltIv: saltIv,
     ).toJson();
 
+    Response response;
+    try {
+      response = await HttpRequester.post(
+        https: USE_HTTPS,
+        host: BACKEND_SERVER_HOST,
+        noPort: !HOST_HAS_PORT,
+        path: LOGIN_PATH,
+        body: body,
+      );
+    } catch (e) {
+      onFail!("connection failed! $e");
+      return;
+    }
 
-    Response response = await HttpRequester.post(path: LOGIN_PATH, body: body);
-    if(response.status != 200){
+    if (response.status != 200) {
       onFail!(response.message);
       return;
     }
     Map<String, dynamic> data = response.data;
-    if(!data.containsKey("username") || !data.containsKey("auth_token")){
+    if (!data.containsKey("username") || !data.containsKey("auth_token")) {
       onFail!(response.message);
       return;
     }
@@ -105,7 +139,7 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    if(user == null){
+    if (user == null) {
       onFail!("not logged in");
       return;
     }
@@ -113,17 +147,26 @@ class AccountManager {
     Map<String, String> headers = {
       "Authorization": "Bearer ${user!.auth_token}",
     };
-    Response response = await HttpRequester.get(
-      path: LOGOUT_PATH,
-      headers: headers,
-    );
 
-    if(response.status != 200){
+    Response response;
+    try {
+      response = await HttpRequester.get(
+        https: USE_HTTPS,
+        host: BACKEND_SERVER_HOST,
+        noPort: !HOST_HAS_PORT,
+        path: LOGOUT_PATH,
+        headers: headers,
+      );
+    } catch (e) {
+      onFail!("connection failed! $e");
+      return;
+    }
+
+    if (response.status != 200) {
       onFail!(response.message);
       return;
     }
     user = null;
     onSuccess!(response.message);
   }
-
 }
