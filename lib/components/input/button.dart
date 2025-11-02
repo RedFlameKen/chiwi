@@ -2,7 +2,7 @@ import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  final Function() onPressed;
+  final void Function() onPressed;
   final String text;
   final double? fontSize;
   final EdgeInsetsGeometry? padding;
