@@ -83,6 +83,8 @@ class _SignupFormState extends State<SignupForm> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text("signed in")));
+          Navigator.pop(context);
+          dispose();
         },
         onFail: (message) {
           String msg = message ?? "failed to signin";
