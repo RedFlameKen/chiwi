@@ -1,6 +1,7 @@
 import 'package:chiwi/enum/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
+import 'package:chiwi/components/quiz_page/review_listener_widget.dart';
 
 class ProgressBarWidget extends StatefulWidget {
   final Direction direction;
@@ -34,10 +35,11 @@ class _ProgressBarWidgetState extends State<ProgressBarWidget> {
   Widget createProgressIndicator(){
     return Expanded(
       child: LinearProgressIndicator(
+        borderRadius: BorderRadius.circular(5),
         minHeight: 30,
         //value: (_currentQuestionIndex + 1) / questions.length,
         value: _value,
-        backgroundColor: ChiwiColors.SERENE_2,
+        backgroundColor: ChiwiColors.ALMOND,
         valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
       ),
     );

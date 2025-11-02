@@ -74,24 +74,13 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
           Container(
             margin: EdgeInsets.all(8),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ChiwiColors.VANILLA,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: loadQuestions,
-                  child: Text("Next Question"),
-                ),
-
-                SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ChiwiColors.VANILLA,
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                    backgroundColor: Colors.white,
                     elevation: 5,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -102,6 +91,19 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                     checkAnswer();
                   },
                   child: Text("Record Answer"),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                    backgroundColor: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: loadQuestions,
+                  child: Text("Next Question"),
                 ),
               ],
             ),
