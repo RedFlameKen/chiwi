@@ -1,6 +1,7 @@
 import 'package:chiwi/auth/account.dart';
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/components/input/text_input.dart';
+import 'package:chiwi/pages/main_menu_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
@@ -80,7 +81,14 @@ class _LoginFormState extends State<LoginForm> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text("logged in")));
-          Navigator.pop(context); // TODO: should be something to enter main screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return MainMenuPage();
+              },
+            ),
+          );
           dispose();
         },
         onFail: (message) {
