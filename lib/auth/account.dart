@@ -1,5 +1,4 @@
 import 'package:chiwi/auth/user.dart';
-import 'package:chiwi/encryption/encryptor.dart';
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/requests/user_request_data.dart';
 import 'package:chiwi/http/response.dart';
@@ -25,14 +24,10 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    Encryptor encryptor = Encryptor();
-    String saltIv = encryptor.getSaltIv();
-    String encrypted = await encryptor.encrypt(password);
 
     String body = UserRequestData(
       username: username,
-      password: encrypted,
-      saltIv: saltIv,
+      password: password
     ).toJson();
 
     Response response;
@@ -96,14 +91,9 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    Encryptor encryptor = Encryptor();
-    String saltIv = encryptor.getSaltIv();
-    String encrypted = await encryptor.encrypt(password);
-
     String body = UserRequestData(
       username: username,
-      password: encrypted,
-      saltIv: saltIv,
+      password: password
     ).toJson();
 
     Response response;
