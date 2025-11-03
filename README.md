@@ -21,6 +21,12 @@ be used to specify a custom port. For example:
 flutter run --web-port 8069 -d web-server
 ```
 
+> [!IMPORTANT]
+> the following section will most likely be removed because the password is no
+> longer encrypted before sending off to the server as explained in the commit
+> [`26f31d8`](https://github.com/redflameken/chiwi/commit/26f31d8). You may
+> disregard this section unless if encryption will be needed again.
+
 Encryption requires secret keys. And to avoid tracking it in git, it is kept in
 a file ignored by git called `keys.json`. To allow encryption to work, create
 that file with the field `ENCRYPTION_KEY`. For example:
