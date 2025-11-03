@@ -1,0 +1,41 @@
+name: Deploy Chiwi AI flutter app
+
+on:
+  push:
+    branches: [deploy]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: master
+
+      - name: Build Flutter App
+        run: flutter build web --base-href="/chiwi/"
+
+      - name: Upload files
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/web
+
+      - name: Deploy to github-pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
