@@ -11,9 +11,9 @@ class AccountManager {
   static const SIGNUP_PATH = "/signup";
   static const SIGNOUT_PATH = "/signout";
 
-  static const BACKEND_SERVER_HOST = "thinkpad-x230.taila38b71.ts.net";
+  static const BACKEND_SERVER_HOST = "localhost";
   static const USE_HTTPS = true;
-  static const HOST_HAS_PORT = false;
+  static const HOST_HAS_PORT = true;
 
   User? user;
 
