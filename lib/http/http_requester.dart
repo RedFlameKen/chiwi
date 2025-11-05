@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chiwi/http/response.dart';
+import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
 
 class HttpRequester {
@@ -45,7 +46,9 @@ class HttpRequester {
       path: path,
       queryParams: queryParams,
     );
-    http.Response httpResponse = await http.get(uri, headers: headers);
+    final client = BrowserClient()..withCredentials = true;
+    http.Response httpResponse = await client.get(uri, headers: headers);
+    client.close();
     Response response = getResponse(httpResponse);
 
     return Future.value(response);
@@ -77,11 +80,13 @@ class HttpRequester {
 
     requestBody = body is Map<String, dynamic> ? jsonEncode(body) : body;
 
-    http.Response httpResponse = await http.post(
+    final client = BrowserClient()..withCredentials = true;
+    http.Response httpResponse = await client.post(
       uri,
       body: requestBody,
       headers: headers,
     );
+    client.close();
     Response response = getResponse(httpResponse);
 
     return Future.value(response);
@@ -113,11 +118,13 @@ class HttpRequester {
 
     requestBody = body is Map<String, dynamic> ? jsonEncode(body) : body;
 
-    http.Response httpResponse = await http.put(
+    final client = BrowserClient()..withCredentials = true;
+    http.Response httpResponse = await client.put(
       uri,
       body: requestBody,
       headers: headers,
     );
+    client.close();
     Response response = getResponse(httpResponse);
 
     return Future.value(response);
@@ -149,11 +156,13 @@ class HttpRequester {
 
     requestBody = body is Map<String, dynamic> ? jsonEncode(body) : body;
 
-    http.Response httpResponse = await http.delete(
+    final client = BrowserClient()..withCredentials = true;
+    http.Response httpResponse = await client.delete(
       uri,
       body: requestBody,
       headers: headers,
     );
+    client.close();
     Response response = getResponse(httpResponse);
 
     return Future.value(response);

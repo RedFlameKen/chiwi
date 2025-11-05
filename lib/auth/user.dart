@@ -1,7 +1,8 @@
 class User {
-  String auth_token;
+  int id;
+  String? auth_token;
   String username;
 
-  User({required this.username, required this.auth_token});
+  User({required this.username, required this.id, this.auth_token});
 
 }

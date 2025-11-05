@@ -32,9 +32,6 @@ class _InitPageState extends State<InitPage> {
         );
       },
       onFail: (message) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message ?? "failed to login")));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
