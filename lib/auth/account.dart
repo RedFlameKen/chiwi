@@ -1,9 +1,7 @@
 import 'package:chiwi/auth/user.dart';
 import 'package:chiwi/http/http_requester.dart';
-import 'package:chiwi/http/requests/user_relogin_data.dart';
 import 'package:chiwi/http/requests/user_request_data.dart';
 import 'package:chiwi/http/response.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AccountManager {
   static final INSTANCE = AccountManager();
@@ -17,21 +15,9 @@ class AccountManager {
   static const USE_HTTPS = true;
   static const HOST_HAS_PORT = true;
 
-  final storage = FlutterSecureStorage();
-
   User? user;
 
   AccountManager();
-
-  Future<void> initUser() async {
-    String? username = await storage.read(key: "username");
-    String? auth_token = await storage.read(key: "auth_token");
-    if (username == null || auth_token == null) {
-      user = null;
-      return;
-    }
-    user = User(username: username, auth_token: auth_token);
-  }
 
   Future<void> signup({
     required String username,
@@ -74,9 +60,6 @@ class AccountManager {
       return;
     }
 
-    Map<String, String> headers = {
-      "Authorization": "Bearer ${user!.auth_token}",
-    };
     Response response;
     try {
       response = await HttpRequester.delete(
@@ -84,7 +67,6 @@ class AccountManager {
         host: BACKEND_SERVER_HOST,
         noPort: !HOST_HAS_PORT,
         path: SIGNOUT_PATH,
-        headers: headers,
       );
     } catch (e) {
       onFail!("connection failed! $e");
@@ -129,14 +111,12 @@ class AccountManager {
       return;
     }
     Map<String, dynamic> data = response.data;
-    if (!data.containsKey("username") || !data.containsKey("auth_token")) {
+    if (!data.containsKey("username") || !data.containsKey("user_id")) {
       onFail!(response.message);
       return;
     }
 
-    user = User(username: data["username"], auth_token: data["auth_token"]);
-    await storage.write(key: "username", value: user!.username);
-    await storage.write(key: "auth_token", value: user!.auth_token);
+    user = User(username: data["username"], id: data["user_id"]);
     onSuccess!(response.message);
   }
 
@@ -144,25 +124,13 @@ class AccountManager {
     Function(String? message)? onSuccess,
     Function(String? message)? onFail,
   }) async {
-    if (user == null) {
-      onFail!("user not initialized");
-      return;
-    }
-
-    String body = UserReloginData(
-      username: user!.username,
-      auth_token: user!.auth_token,
-    ).toJson();
-    print("username: ${user!.username}, token: ${user!.auth_token}");
-
     Response response;
     try {
-      response = await HttpRequester.post(
+      response = await HttpRequester.get(
         https: USE_HTTPS,
         host: BACKEND_SERVER_HOST,
         noPort: !HOST_HAS_PORT,
         path: RELOGIN_PATH,
-        body: body,
       );
     } catch (e) {
       onFail!("connection failed! $e");
@@ -174,13 +142,11 @@ class AccountManager {
       return;
     }
     Map<String, dynamic> data = response.data;
-    if (!data.containsKey("username") || !data.containsKey("auth_token")) {
+    if (!data.containsKey("username") || !data.containsKey("user_id")) {
       onFail!(response.message);
       return;
     }
-    user = User(username: data["username"], auth_token: data["auth_token"]);
-    await storage.write(key: "username", value: user!.username);
-    await storage.write(key: "auth_token", value: user!.auth_token);
+    user = User(username: data["username"], id: data["user_id"]);
     onSuccess!(response.message);
   }
 
@@ -193,10 +159,6 @@ class AccountManager {
       return;
     }
 
-    Map<String, String> headers = {
-      "Authorization": "Bearer ${user!.auth_token}",
-    };
-
     Response response;
     try {
       response = await HttpRequester.get(
@@ -204,7 +166,6 @@ class AccountManager {
         host: BACKEND_SERVER_HOST,
         noPort: !HOST_HAS_PORT,
         path: LOGOUT_PATH,
-        headers: headers,
       );
     } catch (e) {
       onFail!("connection failed! $e");
@@ -218,4 +179,5 @@ class AccountManager {
     user = null;
     onSuccess!(response.message);
   }
+
 }
