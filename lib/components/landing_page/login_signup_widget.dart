@@ -1,3 +1,4 @@
+import 'package:chiwi/pages/dashboard_page.dart';
 import 'package:chiwi/pages/login_page.dart';
 import 'package:chiwi/pages/signup_page.dart';
 import 'package:chiwi/style/colors.dart';
@@ -21,7 +22,7 @@ class LoginSignupWidget extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LoginPage()),
+              MaterialPageRoute(builder: (context) => DashboardPage()), //TEMPRORARY REDIRECT. CHANGE THIS
             );
           },
           child: Text(
