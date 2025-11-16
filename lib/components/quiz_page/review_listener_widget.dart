@@ -1,5 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:chiwi/components/input/button.dart';
+import 'package:chiwi/http/http_requester.dart';
+import 'package:chiwi/http/response.dart';
+import 'package:chiwi/recording/recording.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
+
+import 'package:http/http.dart' as http;
 
 class ReviewListenerWidget extends StatefulWidget {
   @override
@@ -17,6 +25,8 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
 
   List<String> quiz = [];
   int index = 0;
+
+  final Recorder recorder = Recorder();
 
   @override
   void initState() {
@@ -77,33 +87,51 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
-                    backgroundColor: Colors.white,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {
-                    answerRecorder();
-                    checkAnswer();
+                Button(
+                  onPressed: () async {
+                    Uint8List data = await recorder.startRecording();
+                    Map<String, Uint8List> files = {"audio": data};
+                    Response response = await HttpRequester.postForm(
+                      path: "/review/record",
+                      https: true,
+                      files: files,
+                    );
+
+                    if (response.status != 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "request failed, reason: ${response.message}",
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text("request sent")));
                   },
-                  child: Text("Record Answer"),
+                  text: "Record Answer",
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  backgroundColor: Colors.white,
+                  textColor: ChiwiColors.CAROB,
+                  fontSize: 14,
                 ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
-                    backgroundColor: Colors.white,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: loadQuestions,
-                  child: Text("Next Question"),
+                Button(
+                  onPressed: () async => await recorder.stopRecording(),
+                  text: "Stop Recording",
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  backgroundColor: Colors.white,
+                  textColor: ChiwiColors.CAROB,
+                  fontSize: 14,
+                ),
+                Button(
+                  onPressed: () {},
+                  text: "Next Question",
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                  backgroundColor: Colors.white,
+                  textColor: ChiwiColors.CAROB,
+                  fontSize: 14,
                 ),
               ],
             ),
