@@ -1,3 +1,5 @@
+import 'package:chiwi/components/input/button.dart';
+import 'package:chiwi/pages/create_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +105,21 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 ),
               );
             },
+          ),
+        ),
+        Center(
+          child: Button(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CreateReviewerPage();
+                  },
+                ),
+              );
+            },
+            text: "Add Reviewer",
           ),
         ),
       ],
