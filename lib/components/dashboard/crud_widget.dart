@@ -1,5 +1,6 @@
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
+import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:flutter/material.dart';
@@ -22,15 +23,18 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     getReviewers();
   }
 
-  Future<void> getReviewers() async {
-    setState(() async {
-      _reviewers.clear();
-      await ReviewerRequester.getReviewers(
-        onSuccess: (reviewers) {
+  void getReviewers() {
+    _reviewers.clear();
+    ReviewerRequester.getReviewers(
+      onSuccess: (reviewers) {
+        setState(() {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text("Reviewers recieved!")));
           _reviewers.addAll(reviewers);
-        },
-      );
-    });
+        });
+      },
+    );
   }
 
   Future<void> searchReviews() async {
@@ -44,6 +48,72 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     } else {
       print('Reviewer does not exist');
     }
+  }
+
+  Widget? tableItemBuilder(BuildContext context, int index) {
+    final reviewer = _reviewers[index];
+    return Card(
+      child: ListTile(
+        title: Text(reviewer.name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${reviewer.subject}'),
+            Text('${reviewer.flashcardsCount}'),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () async {
+                Reviewer? updated = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return UpdateReviewerPage(reviewer: reviewer);
+                    },
+                  ),
+                );
+                if (updated != null) {
+                  setState(() {
+                    reviewer.name = updated.name;
+                    reviewer.subject = updated.subject;
+                    reviewer.dateModified = updated.dateModified;
+                    reviewer.dateCreated = updated.dateCreated;
+                    reviewer.flashcardsCount = updated.flashcardsCount;
+                  });
+                }
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () async {
+                await ReviewerRequester.deleteReviewer(
+                  id: reviewer.id,
+                  onSuccess: (message) {
+                    setState(() {
+                      _reviewers.remove(reviewer);
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message ?? "Reviewer deleted!")),
+                    );
+                  },
+                  onFail: (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? "Failed to delete reviewer"),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -76,44 +146,13 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         Expanded(
           child: ListView.builder(
             itemCount: _reviewers.length,
-            itemBuilder: (context, index) {
-              final reviewer = _reviewers[index];
-              return Card(
-                child: ListTile(
-                  title: Text(reviewer.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${reviewer.subject}'),
-                      Text('${reviewer.flashcardsCount}'),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          // go to update page
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          // put delete code here
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+            itemBuilder: tableItemBuilder,
           ),
         ),
         Center(
           child: Button(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              bool updated = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
@@ -121,6 +160,10 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                   },
                 ),
               );
+
+              if(updated){
+                getReviewers();
+              }
             },
             text: "Add Reviewer",
           ),

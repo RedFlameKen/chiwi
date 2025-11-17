@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-class CreateReviewerRequestData {
+class ReviewerRequestData {
   String name;
   String subject;
 
-  CreateReviewerRequestData({required this.name, required this.subject});
+  ReviewerRequestData({required this.name, required this.subject});
 
   Map<String, String> toMap(){
     return {

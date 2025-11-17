@@ -1,15 +1,21 @@
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/components/input/text_input.dart';
+import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
-class CreateReviewerPage extends StatefulWidget {
+class UpdateReviewerPage extends StatefulWidget {
+  final Reviewer reviewer;
+
+  UpdateReviewerPage({required this.reviewer});
+
   @override
-  State<StatefulWidget> createState() => _CreateReviewerPageState();
+  State<StatefulWidget> createState() => _UpdateReviewerPageState();
 }
 
-class _CreateReviewerPageState extends State<CreateReviewerPage> {
+class _UpdateReviewerPageState extends State<UpdateReviewerPage> {
+  late Reviewer _reviewer;
   TextEditingController? _nameController;
   TextEditingController? _subjectController;
   late TextInput _nameInput;
@@ -34,9 +40,12 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
   Widget build(BuildContext context) {
     _nameInput = createNameInput();
     _subjectInput = createSubjectInput();
+    _reviewer = widget.reviewer;
+    _nameController!.text = _reviewer.name;
+    _subjectController!.text = _reviewer.subject!;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Reviewer"),
+        title: Text("Update Reviewer"),
         backgroundColor: ChiwiColors.CHAI,
       ),
       body: Container(
@@ -62,25 +71,26 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
             ),
             Button(
               onPressed: () async {
-                await ReviewerRequester.createReviewer(
+                await ReviewerRequester.updateReviewer(
+                  id: _reviewer.id,
                   name: _nameController!.text.toString(),
                   subject: _subjectController!.text.toString(),
-                  onSuccess: (message) {
-                    Navigator.pop(context, true);
+                  onSuccess: (reviewer) {
+                    Navigator.pop(context, reviewer);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message ?? "Reviewer created!")),
+                      SnackBar(content: Text("Reviewer updated!")),
                     );
                   },
                   onFail: (message) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(message ?? "Failed to create reviewer"),
+                        content: Text(message ?? "Failed to update reviewer"),
                       ),
                     );
                   },
                 );
               },
-              text: "Create",
+              text: "Update",
             ),
           ],
         ),
