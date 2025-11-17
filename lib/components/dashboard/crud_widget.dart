@@ -1,3 +1,5 @@
+import 'package:chiwi/reviewer/reviewer.dart';
+import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,7 +11,7 @@ class ReviewerDashboard extends StatefulWidget {
 
 class _ReviewerDashboard extends State<ReviewerDashboard> {
   final TextEditingController _searchController = TextEditingController();
-  List<dynamic> getReviews = [];
+  List<Reviewer> _reviewers = List.empty(growable: true);
   String searchTerm = '';
 
   @override
@@ -19,14 +21,11 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
   }
 
   Future<void> getReviewers() async {
-    final response = await http.get(Uri.parse('')); //call db uri here
-    if (response.statusCode == 200) {
-      setState(() {
-        getReviews = json.decode(response.body);
-      });
-    } else {
-      print('No Reviewers made yet');
-    }
+    setState(() async {
+      _reviewers.clear();
+      List<Reviewer> reviewers = await ReviewerRequester.getReviewers();
+      _reviewers.addAll(reviewers);
+    });
   }
 
   Future<void> searchReviews() async {
@@ -35,7 +34,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     ); //for searching for reviews
     if (response.statusCode == 200) {
       setState(() {
-        getReviews = json.decode(response.body);
+        _reviewers = json.decode(response.body);
       });
     } else {
       print('Reviewer does not exist');
@@ -71,17 +70,17 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: getReviews.length,
+            itemCount: _reviewers.length,
             itemBuilder: (context, index) {
-              final review = getReviews[index];
+              final reviewer = _reviewers[index];
               return Card(
                 child: ListTile(
-                  title: Text(review['reviews']),
+                  title: Text(reviewer.name),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${review['name']}'),
-                      Text('${review['type']}'),
+                      Text('${reviewer.subject}'),
+                      Text('${reviewer.flashcardsCount}'),
                     ],
                   ),
                   trailing: Row(
