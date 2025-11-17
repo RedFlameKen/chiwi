@@ -19,16 +19,16 @@ class ReviewerRequester {
     }
 
     Response response = await HttpRequester.get(path: "/reviewer/list", https: true,);
-    List<Map<String, dynamic>> data = response.data;
+    List<dynamic> data = response.data;
     List<Reviewer> reviewers = List.generate(data.length, (i) {
       Map<String, dynamic> reviewerData = data[i];
       return Reviewer(
         id: reviewerData["id"],
         name: reviewerData["name"],
         subject: reviewerData["subject"],
-        dateModified: reviewerData["date_modified"],
-        dateCreated: reviewerData["date_created"],
-        flashcardsCount: reviewerData["flaschards_count"],
+        dateModified: DateTime.tryParse(reviewerData["date_modified"]),
+        dateCreated: DateTime.tryParse(reviewerData["date_created"]),
+        flashcardsCount: reviewerData["flashcards_count"],
       );
     });
     if(response.status != 200){
