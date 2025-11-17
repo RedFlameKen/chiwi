@@ -4,8 +4,6 @@ import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ReviewerDashboard extends StatefulWidget {
   @override
@@ -15,7 +13,6 @@ class ReviewerDashboard extends StatefulWidget {
 class _ReviewerDashboard extends State<ReviewerDashboard> {
   final TextEditingController _searchController = TextEditingController();
   List<Reviewer> _reviewers = List.empty(growable: true);
-  String searchTerm = '';
 
   @override
   void initState() {
@@ -23,9 +20,10 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     getReviewers();
   }
 
-  void getReviewers() {
+  void getReviewers({String? query}) {
     _reviewers.clear();
     ReviewerRequester.getReviewers(
+      query: query,
       onSuccess: (reviewers) {
         setState(() {
           ScaffoldMessenger.of(
@@ -35,19 +33,6 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         });
       },
     );
-  }
-
-  Future<void> searchReviews() async {
-    final response = await http.get(
-      Uri.parse('$searchTerm'),
-    ); //for searching for reviews
-    if (response.statusCode == 200) {
-      setState(() {
-        _reviewers = json.decode(response.body);
-      });
-    } else {
-      print('Reviewer does not exist');
-    }
   }
 
   Widget? tableItemBuilder(BuildContext context, int index) {
@@ -136,8 +121,8 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  searchTerm = _searchController.text;
-                  searchReviews();
+                  String searchTerm = _searchController.text;
+                  getReviewers(query: searchTerm);
                 },
               ),
             ],

@@ -34,6 +34,7 @@ class ReviewerRequester {
   }
 
   static Future<void> getReviewers({
+    String? query,
     required Function(List<Reviewer>) onSuccess,
     Function(String?)? onFail,
   }) async {
@@ -45,8 +46,14 @@ class ReviewerRequester {
       return;
     }
 
+    Map<String, String>? params = null;
+    if(query != null){
+      params = {"query": query};
+    }
+
     Response response = await HttpRequester.get(
       path: LIST_ENDPOINT,
+      queryParams: params,
       https: true,
     );
     if (response.status != 200) {
