@@ -62,19 +62,22 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
             ),
             Button(
               onPressed: () async {
-                final response = await ReviewerRequester.createReviewer(
-                  _nameController!.text.toString(),
-                  _subjectController!.text.toString(),
-                );
-                if (response.status == 200) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("Reviewer created!")));
-                  return;
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Failed to create reviewer")),
+                await ReviewerRequester.createReviewer(
+                  name: _nameController!.text.toString(),
+                  subject: _subjectController!.text.toString(),
+                  onSuccess: (message) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message ?? "Reviewer created!")),
+                    );
+                  },
+                  onFail: (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? "Failed to create reviewer"),
+                      ),
+                    );
+                  },
                 );
               },
               text: "Create",

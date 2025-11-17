@@ -25,8 +25,11 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
   Future<void> getReviewers() async {
     setState(() async {
       _reviewers.clear();
-      List<Reviewer> reviewers = await ReviewerRequester.getReviewers();
-      _reviewers.addAll(reviewers);
+      await ReviewerRequester.getReviewers(
+        onSuccess: (reviewers) {
+          _reviewers.addAll(reviewers);
+        },
+      );
     });
   }
 

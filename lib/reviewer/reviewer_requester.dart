@@ -6,13 +6,19 @@ import 'package:chiwi/http/response.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 
 class ReviewerRequester {
-  static Future<List<Reviewer>> getReviewers() async {
+  static Future<void> getReviewers({
+    required Function(List<Reviewer>) onSuccess,
+    Function(String?)? onFail,
+  }) async {
     int id = _getUserId();
     if (id == -1) {
-      return List.empty();
+      if(onFail != null){
+        onFail("not logged in yet");
+      }
+      return;
     }
 
-    Response response = await HttpRequester.get(path: "/reviewer/list", https: true);
+    Response response = await HttpRequester.get(path: "/reviewer/list", https: true,);
     List<Map<String, dynamic>> data = response.data;
     List<Reviewer> reviewers = List.generate(data.length, (i) {
       Map<String, dynamic> reviewerData = data[i];
@@ -25,13 +31,29 @@ class ReviewerRequester {
         flashcardsCount: reviewerData["flaschards_count"],
       );
     });
+    if(response.status != 200){
+      if(onFail != null)
+        onFail(response.message!);
+      return;
+    }
 
-    return reviewers;
+    onSuccess(reviewers);
   }
 
-  static Future<Response> createReviewer(String name, String subject) async {
+  static Future<void> createReviewer({
+    required String name,
+    required String subject,
+    required Function(String?) onSuccess,
+    Function(String?)? onFail,
+  }) async {
     Map<String, String> reviewerData = CreateReviewerRequestData(name: name, subject: subject).toMap();
-    return await HttpRequester.post(path: "/reviewer/create", body: reviewerData, https: true);
+    final response = await HttpRequester.post(path: "/reviewer/create", body: reviewerData, https: true);
+    if(response.status != 200){
+      if(onFail != null)
+        onFail(response.message!);
+      return;
+    }
+    onSuccess(response.message!);
   }
 
   static int _getUserId() {
