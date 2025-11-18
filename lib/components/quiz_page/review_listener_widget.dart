@@ -92,7 +92,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                     Uint8List data = await recorder.startRecording();
                     Map<String, Uint8List> files = {"audio": data};
                     Response response = await HttpRequester.postForm(
-                      path: "/review/record",
+                      path: "/reviewer/setup/command",
                       https: true,
                       files: files,
                     );
@@ -107,9 +107,11 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                       );
                       return;
                     }
+                    Map<String, dynamic> responseData = response.data;
                     ScaffoldMessenger.of(
                       context,
-                    ).showSnackBar(SnackBar(content: Text("request sent")));
+                    ).showSnackBar(SnackBar(content: Text("${responseData["text"]}")));
+                    debugPrint("received: ${responseData["text"]}");
                   },
                   text: "Record Answer",
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 20),

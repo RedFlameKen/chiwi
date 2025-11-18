@@ -71,7 +71,8 @@ class Recorder {
     );
     _recorder.startRecorder(
       codec: .pcm16,
-      sampleRate: 16000,
+      // TODO: Create a utility to get AudioContexts using js interop and get its sampleRate and put it here. then x2 on pcmToWaveBuffer() call
+      sampleRate: 48000,
       toStream: _streamController!.sink,
     );
     _dataSubscription = _streamController!.stream.listen(recordEvent);
@@ -89,7 +90,7 @@ class Recorder {
     _resetVars();
     final converted = await FlutterSoundHelper().pcmToWaveBuffer(
       inputBuffer: bytes,
-      sampleRate: 32000,
+      sampleRate: 96000,
     );
     _completer!.complete(converted);
   }
