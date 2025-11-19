@@ -23,6 +23,8 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   final String answer1 = "Al Qaeda";
   //temporary questions and answers for testing
 
+  // FIXME: I know I said something about temporary code not being staged and commited, but this is a placeholder to get more features done
+  String _displayQuestion = "";
   List<String> quiz = [];
   int index = 0;
 
@@ -36,7 +38,9 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
 
   void loadQuiz() {
     quiz = [question0, question1];
-    setState(() {});
+    setState(() {
+      _displayQuestion = quiz[index];
+    });
   }
 
   void loadQuestions() {
@@ -75,7 +79,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                 ),
                 child: Text(
                   //question display
-                  quiz[index],
+                  _displayQuestion,
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -90,6 +94,11 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                 Button(
                   onPressed: () async {
                     Uint8List data = await recorder.startRecording();
+                    setState(() {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("stopped")));
+                    });
                     Map<String, Uint8List> files = {"audio": data};
                     Response response = await HttpRequester.postForm(
                       path: "/reviewer/setup/command",
@@ -108,10 +117,14 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                       return;
                     }
                     Map<String, dynamic> responseData = response.data;
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text("${responseData["text"]}")));
-                    debugPrint("received: ${responseData["text"]}");
+                    setState(() {
+                      _displayQuestion =
+                          "command: ${responseData["command"]}\n${responseData["message"]}";
+                    });
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(content: Text("${responseData["message"]}")),
+                    // );
+                    debugPrint("received: ${responseData["message"]}");
                   },
                   text: "Record Answer",
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
