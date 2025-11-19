@@ -1,15 +1,11 @@
-<<<<<<< HEAD
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-=======
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:flutter/material.dart';
->>>>>>> 106f6c223c3d29b370a016e874ce57bda1346311
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ReviewerDashboard extends StatefulWidget {
   @override
@@ -18,12 +14,8 @@ class ReviewerDashboard extends StatefulWidget {
 
 class _ReviewerDashboard extends State<ReviewerDashboard> {
   final TextEditingController _searchController = TextEditingController();
-<<<<<<< HEAD
-  List<dynamic> getReviews = [];
-  String searchTerm = '';
-=======
   List<Reviewer> _reviewers = List.empty(growable: true);
->>>>>>> 106f6c223c3d29b370a016e874ce57bda1346311
+  String searchTerm = '';
 
   @override
   void initState() {
@@ -31,32 +23,9 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     getReviewers();
   }
 
-<<<<<<< HEAD
-  Future<void> getReviewers() async {
-    final response = await http.get(Uri.parse('')); //call db uri here
-    if (response.statusCode == 200) {
-      setState(() {
-        getReviews = json.decode(response.body);
-      });
-    } else {
-      print('No Reviewers made yet');
-    }
-  }
-
-  Future<void> searchReviews() async {
-    final response = await http.get(Uri.parse('$searchTerm')); //for searching for reviews
-    if (response.statusCode == 200) {
-      setState(() {
-        getReviews = json.decode(response.body);
-      });
-    } else {
-      print('Reviewer does not exist');
-    }
-=======
-  void getReviewers({String? query}) {
+  void getReviewers() {
     _reviewers.clear();
     ReviewerRequester.getReviewers(
-      query: query,
       onSuccess: (reviewers) {
         setState(() {
           ScaffoldMessenger.of(
@@ -66,6 +35,19 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         });
       },
     );
+  }
+
+  Future<void> searchReviews() async {
+    final response = await http.get(
+      Uri.parse('$searchTerm'),
+    ); //for searching for reviews
+    if (response.statusCode == 200) {
+      setState(() {
+        _reviewers = json.decode(response.body);
+      });
+    } else {
+      print('Reviewer does not exist');
+    }
   }
 
   Widget? tableItemBuilder(BuildContext context, int index) {
@@ -132,78 +114,10 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         ),
       ),
     );
->>>>>>> 106f6c223c3d29b370a016e874ce57bda1346311
   }
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Reviewers'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              searchTerm = _searchController.text;
-              searchReviews();
-            },
-          )
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: getReviews.length,
-              itemBuilder: (context, index) {
-                final review = getReviews[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(review['reviews']),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${review['name']}'),
-                        Text('${review['type']}'),
-                       
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            // go to update page
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            // put delete code here
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-=======
     return Column(
       children: [
         Padding(
@@ -222,8 +136,8 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  String searchTerm = _searchController.text;
-                  getReviewers(query: searchTerm);
+                  searchTerm = _searchController.text;
+                  searchReviews();
                 },
               ),
             ],
@@ -255,7 +169,6 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           ),
         ),
       ],
->>>>>>> 106f6c223c3d29b370a016e874ce57bda1346311
     );
   }
 }
