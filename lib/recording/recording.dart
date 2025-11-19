@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chiwi/js/audio_contexts/audio_context.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
@@ -9,6 +10,7 @@ class Recorder {
 
   final _recorder = FlutterSoundRecorder(logLevel: .warning);
   final List<Uint8List> _chunks = List.empty(growable: true);
+  int sampleRate = 48000;
 
   StreamController<Uint8List>? _streamController;
   StreamSubscription<Uint8List>? _dataSubscription;
@@ -64,6 +66,7 @@ class Recorder {
     _completer = Completer();
 
     _streamController = StreamController();
+    sampleRate = AudioContext().sampleRate;
 
     _recorder.openRecorder();
     await _recorder.setSubscriptionDuration(
@@ -90,7 +93,7 @@ class Recorder {
     _resetVars();
     final converted = await FlutterSoundHelper().pcmToWaveBuffer(
       inputBuffer: bytes,
-      sampleRate: 96000,
+      sampleRate: sampleRate*2,
     );
     _completer!.complete(converted);
   }
