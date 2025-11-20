@@ -9,7 +9,13 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome to Chiwi AI'),
+        title: Text(
+          'Welcome to Chiwi AI',
+          style: TextStyle(
+            fontFamily: 'Assistant',
+            fontWeight: FontWeight.bold,
+          ),
+          ),
         backgroundColor: ChiwiColors.SERENE_0,
         centerTitle: true,
       ),
@@ -24,3 +30,24 @@ class DashboardPage extends StatelessWidget {
     );
   }
 }
+
+
+// Center(
+//           child: Button(
+//             onPressed: () async {
+//               bool updated = await Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) {
+//                     return CreateReviewerPage();
+//                   },
+//                 ),
+//               );
+
+//               if(updated){
+//                 getReviewers();
+//               }
+//             },
+//             text: "Add Reviewer",
+//           ),
+//         ),

@@ -54,12 +54,15 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
     final reviewer = _reviewers[index];
     return Card(
       child: ListTile(
-        title: Text(reviewer.name),
+        title: Text(reviewer.name, style: TextStyle(fontFamily: 'Assistant')),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${reviewer.subject}'),
-            Text('${reviewer.flashcardsCount}'),
+            Text('${reviewer.subject}', style: TextStyle(fontFamily: 'Sans')),
+            Text(
+              '${reviewer.flashcardsCount}',
+              style: TextStyle(fontFamily: 'Sans'),
+            ),
           ],
         ),
         trailing: Row(
@@ -150,7 +153,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           ),
         ),
         Center(
-          child: Button(
+          child: ElevatedButton(
             onPressed: () async {
               bool updated = await Navigator.push(
                 context,
@@ -161,11 +164,14 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 ),
               );
 
-              if(updated){
+              if (updated) {
                 getReviewers();
               }
             },
-            text: "Add Reviewer",
+            child: Text(
+              "Add Reviewer",
+              style: TextStyle(fontFamily: 'Sans', fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],
