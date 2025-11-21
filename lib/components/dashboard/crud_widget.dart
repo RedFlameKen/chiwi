@@ -1,5 +1,7 @@
 import 'package:chiwi/components/input/button.dart';
+import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
+import 'package:chiwi/pages/quiz_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
@@ -47,6 +49,28 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
             Text('${reviewer.flashcardsCount}'),
           ],
         ),
+        onTap: () async {
+          Map<String, dynamic> payload = {"reviewer_id": reviewer.id};
+          final response = await HttpRequester.post(
+            path: "/reviewer/setup/start",
+            body: payload,
+            https: true,
+          );
+          if (response.status != 200) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(response.message ?? "unable to start setup")),
+            );
+            return;
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return QuizPage();
+              },
+            ),
+          );
+        },
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -146,7 +170,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 ),
               );
 
-              if(updated){
+              if (updated) {
                 getReviewers();
               }
             },
