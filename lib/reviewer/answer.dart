@@ -1,5 +1,5 @@
 class Answer {
-  double id;
+  int id;
   String? answer;
 
   Answer({required this.id, required this.answer});

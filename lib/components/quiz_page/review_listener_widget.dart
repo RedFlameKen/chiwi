@@ -4,6 +4,7 @@ import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/response.dart';
 import 'package:chiwi/recording/recording.dart';
+import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
 
@@ -93,38 +94,25 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                 SizedBox(height: 20),
                 Button(
                   onPressed: () async {
-                    Uint8List data = await recorder.startRecording();
+                    Uint8List recordingData = await recorder.startRecording();
                     setState(() {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text("stopped")));
-                    });
-                    Map<String, Uint8List> files = {"audio": data};
-                    Response response = await HttpRequester.postForm(
-                      path: "/reviewer/setup/command",
-                      https: true,
-                      files: files,
-                    );
-
-                    if (response.status != 200) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(
-                            "request failed, reason: ${response.message}",
-                          ),
+                          content: Text("stopped"),
+                          duration: Duration(seconds: 1),
                         ),
                       );
-                      return;
-                    }
-                    Map<String, dynamic> responseData = response.data;
-                    setState(() {
-                      _displayQuestion =
-                          "command: ${responseData["command"]}\n${responseData["message"]}";
                     });
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   SnackBar(content: Text("${responseData["message"]}")),
-                    // );
-                    debugPrint("received: ${responseData["message"]}");
+                    ReviewerSetupRequester.processCommand(
+                      recordingBytes: recordingData,
+                      onSuccess: (message, result) {
+                        setState(() {
+                          _displayQuestion =
+                              "command: ${result.command}\n${result.message}";
+                        });
+                        debugPrint("received: ${result.message}");
+                      },
+                    );
                   },
                   text: "Record Answer",
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 20),

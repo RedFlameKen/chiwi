@@ -5,6 +5,7 @@ import 'package:chiwi/pages/quiz_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
+import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:flutter/material.dart';
 
 class ReviewerDashboard extends StatefulWidget {
@@ -50,25 +51,23 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           ],
         ),
         onTap: () async {
-          Map<String, dynamic> payload = {"reviewer_id": reviewer.id};
-          final response = await HttpRequester.post(
-            path: "/reviewer/setup/start",
-            body: payload,
-            https: true,
-          );
-          if (response.status != 200) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(response.message ?? "unable to start setup")),
-            );
-            return;
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return QuizPage();
-              },
-            ),
+          ReviewerSetupRequester.startSetup(
+            reviewerId: reviewer.id,
+            onSuccess: (message) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return QuizPage();
+                  },
+                ),
+              );
+            },
+            onFail: (message) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message ?? "unable to start setup")),
+              );
+            },
           );
         },
         trailing: Row(

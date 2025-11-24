@@ -77,7 +77,7 @@ class ReviewerRequester {
   }
 
   static Future<void> updateReviewer({
-    required double id,
+    required int id,
     required String name,
     required String subject,
     required Function(Reviewer) onSuccess,
@@ -109,7 +109,7 @@ class ReviewerRequester {
   }
 
   static Future<void> deleteReviewer({
-    required double id,
+    required int id,
     required Function(String?) onSuccess,
     Function(String?)? onFail,
   }) async {

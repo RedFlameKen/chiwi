@@ -1,5 +1,5 @@
 class Reviewer {
-  double id;
+  int id;
   String name;
   String? subject;
   DateTime? dateCreated;

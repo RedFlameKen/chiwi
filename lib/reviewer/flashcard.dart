@@ -3,7 +3,7 @@ import 'package:chiwi/reviewer/answer.dart';
 enum FlashcardType { SIMPLE, MULTI_CHOICE, MULTI_ANSWER, ENUMERATION }
 
 class Flashcard {
-  double id;
+  int id;
   String? question;
   FlashcardType? type;
   DateTime? dateCreated;
