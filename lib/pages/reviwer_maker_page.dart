@@ -2,8 +2,8 @@ import 'package:chiwi/components/landing_page/voice_input_widgets.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
-class ReviwermakerPage extends StatelessWidget {
-  const ReviwermakerPage({super.key});
+class ReviewerMakerPage extends StatelessWidget {
+  const ReviewerMakerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
