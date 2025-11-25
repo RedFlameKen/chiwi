@@ -4,7 +4,8 @@ import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/quiz_page/review_listener_widget.dart';
 
 class QuizPage extends StatelessWidget {
-  const QuizPage({super.key});
+  final String intialQuestion;
+  const QuizPage({super.key, required this.intialQuestion});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,9 @@ class QuizPage extends StatelessWidget {
             child: Row(
               mainAxisSize: .max,
               children: [
-                Expanded(child: ReviewListenerWidget()),
+                Expanded(
+                  child: ReviewListenerWidget(initialQuestion: intialQuestion),
+                ),
                 ProgressBarWidget(direction: .vertical),
               ],
             ),

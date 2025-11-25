@@ -1,7 +1,9 @@
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
+import 'package:chiwi/pages/quiz_page.dart';
 import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
+import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
@@ -50,21 +52,21 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           ],
         ),
         onTap: () async {
-          ReviewerSetupRequester.startSetup(
+          ReviewSessionRequester.startReview(
             reviewerId: reviewer.id,
-            onSuccess: (message) {
+            onSuccess: (message, result) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ReviewerMakerPage();
+                    return QuizPage(intialQuestion: result.data["question"]);
                   },
                 ),
               );
             },
             onFail: (message) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message ?? "unable to start setup")),
+                SnackBar(content: Text(message ?? "unable to start review")),
               );
             },
           );
@@ -73,7 +75,34 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+              icon: Icon(Icons.edit_document),
+              tooltip: "setup flashcards",
+              onPressed: () async {
+                ReviewerSetupRequester.startSetup(
+                  reviewerId: reviewer.id,
+                  onSuccess: (message) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ReviewerMakerPage();
+                        },
+                      ),
+                    );
+                  },
+                  onFail: (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? "unable to start setup"),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.edit),
+              tooltip: "edit",
               onPressed: () async {
                 Reviewer? updated = await Navigator.push(
                   context,
@@ -96,6 +125,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
             ),
             IconButton(
               icon: Icon(Icons.delete),
+              tooltip: "delete",
               onPressed: () async {
                 await ReviewerRequester.deleteReviewer(
                   id: reviewer.id,

@@ -2,10 +2,14 @@ import 'dart:typed_data';
 
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/recording/recording.dart';
+import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
+  final String initialQuestion;
+  ReviewListenerWidget({required this.initialQuestion});
+
   @override
   ReviewListenerWidgetState createState() => ReviewListenerWidgetState();
 }
@@ -29,7 +33,10 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   @override
   void initState() {
     super.initState();
-    loadQuiz();
+    setState(() {
+      _displayQuestion = widget.initialQuestion;
+    });
+    // loadQuiz();
   }
 
   void loadQuiz() {
@@ -98,6 +105,29 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                         ),
                       );
                     });
+                    ReviewSessionRequester.processCommand(
+                      recordingBytes: recordingData,
+                      onSuccess: (message, result) {
+                        String question = "";
+                        if (result.data != null) {
+                          result.data["question"] == null
+                              ? "\n${result.data["question"]}"
+                              : "";
+                        }
+                        setState(() {
+                          _displayQuestion = "$message$question";
+                        });
+                      },
+                      onFail: (message) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              message ?? "unable to process command",
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                   text: "Record Answer",
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
