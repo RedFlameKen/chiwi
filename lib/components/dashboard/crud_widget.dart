@@ -1,7 +1,6 @@
 import 'package:chiwi/components/input/button.dart';
-import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
-import 'package:chiwi/pages/quiz_page.dart';
+import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
@@ -58,7 +57,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return QuizPage();
+                    return ReviewerMakerPage();
                   },
                 ),
               );

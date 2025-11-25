@@ -1,7 +1,6 @@
 import 'package:chiwi/enum/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
-import 'package:chiwi/components/quiz_page/review_listener_widget.dart';
 
 class ProgressBarWidget extends StatefulWidget {
   final Direction direction;

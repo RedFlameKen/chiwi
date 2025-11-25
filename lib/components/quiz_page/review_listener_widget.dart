@@ -1,14 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:chiwi/components/input/button.dart';
-import 'package:chiwi/http/http_requester.dart';
-import 'package:chiwi/http/response.dart';
 import 'package:chiwi/recording/recording.dart';
-import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
-
-import 'package:http/http.dart' as http;
 
 class ReviewListenerWidget extends StatefulWidget {
   @override
@@ -103,16 +98,6 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                         ),
                       );
                     });
-                    ReviewerSetupRequester.processCommand(
-                      recordingBytes: recordingData,
-                      onSuccess: (message, result) {
-                        setState(() {
-                          _displayQuestion =
-                              "command: ${result.command}\n${result.message}";
-                        });
-                        debugPrint("received: ${result.message}");
-                      },
-                    );
                   },
                   text: "Record Answer",
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 20),

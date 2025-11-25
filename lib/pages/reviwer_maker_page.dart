@@ -1,10 +1,24 @@
+import 'dart:typed_data';
+
 import 'package:chiwi/components/landing_page/voice_input_widgets.dart';
+import 'package:chiwi/recording/recording.dart';
+import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
-class ReviewerMakerPage extends StatelessWidget {
+class ReviewerMakerPage extends StatefulWidget {
   const ReviewerMakerPage({super.key});
 
+  @override
+  State<StatefulWidget> createState() => _ReviewerMakerPageState();
+
+}
+
+class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
+
+  String _displayMessage = "";
+
+  final Recorder _recorder = Recorder();
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -35,7 +49,7 @@ class ReviewerMakerPage extends StatelessWidget {
                         child: Text(
                           //replace this with function to show inputs
                           //text display 
-                          'Display Inputs',
+                          '$_displayMessage',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
@@ -60,12 +74,29 @@ class ReviewerMakerPage extends StatelessWidget {
                     ),
                   ),
                   VoiceInputWidgets(
-                    listenButton: () {
-                      //insert functions here
+                    listenButton: () async {
+                    Uint8List recordingData = await _recorder.startRecording();
+                    setState(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("stopped"),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    });
+                    ReviewerSetupRequester.processCommand(
+                      recordingBytes: recordingData,
+                      onSuccess: (message, result) {
+                        setState(() {
+                          _displayMessage =
+                              "command: ${result.command}\n${result.message}";
+                        });
+                        debugPrint("received: ${result.message}");
+                      },
+                    );
+
                     },
-                    stopButton: () {
-                      //insert functions here
-                    },
+                    stopButton: () async => await _recorder.stopRecording(),
                   ),
                   SizedBox(height: 10),
                 ],
