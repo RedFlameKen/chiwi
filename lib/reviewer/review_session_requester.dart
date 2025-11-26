@@ -5,14 +5,19 @@ import 'package:flutter/services.dart';
 class ReviewSessionRequester {
   static const START_ENDPOINT = "/reviewer/review/start";
   static const COMMAND_ENDPOINT = "/reviewer/review/command";
+  static const FINISH_ENDPOINT = "/reviewer/review/finish";
 
   static Future<void> startReview({
     required int reviewerId,
-    required Function(String?, QuizResponse) onSuccess,
-    Function(String?)? onFail
+    required Function(String?, ReviewSessionResponse) onSuccess,
+    Function(String?)? onFail,
   }) async {
     Map<String, int> body = {"reviewer_id": reviewerId};
-    final response = await HttpRequester.post(path: START_ENDPOINT, body: body, https: true);
+    final response = await HttpRequester.post(
+      path: START_ENDPOINT,
+      body: body,
+      https: true,
+    );
 
     if (response.status != 200) {
       onFail!(response.message);
@@ -20,23 +25,52 @@ class ReviewSessionRequester {
     }
 
     Map<String, dynamic> data = response.data;
-    var commandData;
-    if(data.containsKey("data")){
-      commandData = data["data"];
+    QuizResponse? quizResponse;
+
+    if (data.containsKey("data")) {
+      quizResponse = QuizResponse(question: data["data"]["question"]);
     }
-    final commandResponse = QuizResponse(
+    final commandResponse = ReviewSessionResponse(
       message: data["message"],
       command: ReviewCommandType.values.byName(data["command"]),
-      data: commandData
+      data: quizResponse,
     );
 
     onSuccess(response.message, commandResponse);
   }
 
+  static Future<void> finishReview({
+    required int reviewerId,
+    required Function(String?, ReviewResultsResponse) onSuccess,
+    Function(String?)? onFail,
+  }) async {
+    Map<String, int> body = {"reviewer_id": reviewerId};
+    final response = await HttpRequester.post(
+      path: FINISH_ENDPOINT,
+      body: body,
+      https: true,
+    );
+
+    if (response.status != 200) {
+      onFail!(response.message);
+      return;
+    }
+
+    Map<String, dynamic> data = response.data;
+
+    final results = ReviewResultsResponse(
+      message: data["message"],
+      score: data["score"],
+      total: data["total_items"],
+    );
+
+    onSuccess(response.message, results);
+  }
+
   static Future<void> processCommand({
     required Uint8List recordingBytes,
-    required Function(String?, QuizResponse) onSuccess,
-    Function(String?)? onFail
+    required Function(String?, ReviewSessionResponse) onSuccess,
+    Function(String?)? onFail,
   }) async {
     Map<String, Uint8List> files = {"audio": recordingBytes};
     final response = await HttpRequester.postForm(
@@ -51,36 +85,55 @@ class ReviewSessionRequester {
     }
 
     Map<String, dynamic>? data = response.data;
-    Map<String, dynamic>? commandData;
-    QuizResponse commandResponse;
+    QuizResponse? quizResponse;
+    ReviewSessionResponse commandResponse;
 
-    if(data == null){
+    if (data == null) {
       onFail!(response.message ?? "something went wrong");
       return;
     }
 
-    if(data.containsKey("data")){
-      commandData = response.data["data"];
+    if (data.containsKey("data")) {
+      if(response.data["data"] != null){
+        quizResponse = QuizResponse(question: response.data["data"]["question"]);
+      }
     }
-    commandResponse = QuizResponse(
-        message: data["message"],
-        command: ReviewCommandType.values.byName(data["command"]),
-        data: commandData
-        );
+    commandResponse = ReviewSessionResponse(
+      message: data["message"],
+      command: ReviewCommandType.values.byName(data["command"]),
+      data: quizResponse,
+    );
 
     onSuccess(response.message, commandResponse);
   }
-  
 }
 
-class QuizResponse<T> {
-  String message;
-  ReviewCommandType command;
-  T? data;
+class ReviewSessionResponse<T> {
+  final String message;
+  final ReviewCommandType command;
+  QuizResponse? data;
 
-  QuizResponse({
+  ReviewSessionResponse({
     required this.message,
     required this.command,
-    this.data
+    this.data,
+  });
+}
+
+class QuizResponse {
+  String? question;
+
+  QuizResponse({required this.question});
+}
+
+class ReviewResultsResponse {
+  final String message;
+  final int score;
+  final int total;
+
+  ReviewResultsResponse({
+    required this.message,
+    required this.score,
+    required this.total,
   });
 }

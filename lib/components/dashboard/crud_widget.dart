@@ -59,7 +59,10 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return QuizPage(intialQuestion: result.data["question"]);
+                    return QuizPage(
+                      intialQuestion: result.data!.question!,
+                      reviewerId: reviewer.id,
+                    );
                   },
                 ),
               );

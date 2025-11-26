@@ -2,13 +2,18 @@ import 'dart:typed_data';
 
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/recording/recording.dart';
+import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
   final String initialQuestion;
-  ReviewListenerWidget({required this.initialQuestion});
+  final int reviewerId;
+  ReviewListenerWidget({
+    required this.initialQuestion,
+    required this.reviewerId,
+  });
 
   @override
   ReviewListenerWidgetState createState() => ReviewListenerWidgetState();
@@ -108,10 +113,31 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                     ReviewSessionRequester.processCommand(
                       recordingBytes: recordingData,
                       onSuccess: (message, result) {
+                        if (result.command == ReviewCommandType.COMPLETE) {
+                          ReviewSessionRequester.finishReview(
+                            reviewerId: widget.reviewerId,
+                            onSuccess: (message, result) {
+                              setState(() {
+                                _displayQuestion =
+                                    "${result.message}\nYour score is ${result.score}/${result.total}";
+                              });
+                            },
+                            onFail: (message) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    message ?? "unable to process command",
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          return;
+                        }
                         String question = "";
                         if (result.data != null) {
-                          result.data["question"] == null
-                              ? "\n${result.data["question"]}"
+                          result.data!.question == null
+                              ? "\n${result.data!.question}"
                               : "";
                         }
                         setState(() {

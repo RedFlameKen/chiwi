@@ -1,5 +1,6 @@
 enum ReviewCommandType {
   INIT,
   QA,
-  FINISH
+  FINISH,
+  COMPLETE
 }
