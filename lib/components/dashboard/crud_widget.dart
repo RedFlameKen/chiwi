@@ -30,9 +30,6 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
       query: query,
       onSuccess: (reviewers) {
         setState(() {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("Reviewers recieved!")));
           _reviewers.addAll(reviewers);
         });
       },
