@@ -1,14 +1,14 @@
-import 'package:chiwi/components/stateful/progress_bar_widget.dart';
+import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/quiz_page/review_listener_widget.dart';
 
 class QuizPage extends StatelessWidget {
-  final String intialQuestion;
+  final ReviewSessionResponse initResponse;
   final int reviewerId;
   const QuizPage({
     super.key,
-    required this.intialQuestion,
+    required this.initResponse,
     required this.reviewerId,
   });
 
@@ -18,17 +18,9 @@ class QuizPage extends StatelessWidget {
       body: Row(
         children: [
           Expanded(
-            child: Row(
-              mainAxisSize: .max,
-              children: [
-                Expanded(
-                  child: ReviewListenerWidget(
-                    initialQuestion: intialQuestion,
-                    reviewerId: reviewerId,
-                  ),
-                ),
-                ProgressBarWidget(direction: .vertical),
-              ],
+            child: ReviewListenerWidget(
+              initResponse: initResponse,
+              reviewerId: reviewerId,
             ),
           ),
           Expanded(child: ChiwiWidget()),

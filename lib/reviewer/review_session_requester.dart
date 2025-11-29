@@ -28,7 +28,13 @@ class ReviewSessionRequester {
     QuizResponse? quizResponse;
 
     if (data.containsKey("data")) {
-      quizResponse = QuizResponse(question: data["data"]["question"]);
+      final quizData = data["data"];
+      quizResponse = QuizResponse(
+        question: quizData["question"],
+        state: QuizState.values.byName(quizData["state"]),
+        flashcardCount: quizData["flashcard_count"],
+        curFlashcard: quizData["cur_flashcard"],
+      );
     }
     final commandResponse = ReviewSessionResponse(
       message: data["message"],
@@ -94,8 +100,14 @@ class ReviewSessionRequester {
     }
 
     if (data.containsKey("data")) {
-      if(response.data["data"] != null){
-        quizResponse = QuizResponse(question: response.data["data"]["question"]);
+      if (response.data["data"] != null) {
+        final quizData = response.data["data"];
+        quizResponse = QuizResponse(
+          question: quizData["question"],
+          state: QuizState.values.byName(quizData["state"]),
+          flashcardCount: quizData["flashcard_count"],
+          curFlashcard: quizData["cur_flashcard"],
+        );
       }
     }
     commandResponse = ReviewSessionResponse(
@@ -107,6 +119,8 @@ class ReviewSessionRequester {
     onSuccess(response.message, commandResponse);
   }
 }
+
+enum QuizState { ASK_QUESTION, LISTEN_FOR_ANSWER, CONFIRM_ANSWER }
 
 class ReviewSessionResponse<T> {
   final String message;
@@ -121,9 +135,17 @@ class ReviewSessionResponse<T> {
 }
 
 class QuizResponse {
-  String? question;
+  String question;
+  QuizState state;
+  int flashcardCount;
+  int curFlashcard;
 
-  QuizResponse({required this.question});
+  QuizResponse({
+    required this.question,
+    required this.state,
+    required this.flashcardCount,
+    required this.curFlashcard,
+  });
 }
 
 class ReviewResultsResponse {

@@ -115,11 +115,12 @@ class HttpRequester {
 
     headers = headers ?? <String, String>{};
 
-    // TODO: See if this works
     final client = BrowserClient()..withCredentials = true;
     var request = http.MultipartRequest("POST", uri);
     request.headers.addAll(headers);
-    // await _addFields(request, fields!);
+    if(fields != null){
+      await _addFields(request, fields);
+    }
     await _addFiles(request, files!);
     var httpResponse = await client.send(request);
     client.close();

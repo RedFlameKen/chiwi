@@ -2,57 +2,41 @@ import 'package:chiwi/enum/direction.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/style/colors.dart';
 
-class ProgressBarWidget extends StatefulWidget {
+class ProgressBarWidget extends StatelessWidget {
   final Direction direction;
-  const ProgressBarWidget({super.key, this.direction = .horizontal});
+  final double progress;
+  final Duration duration;
 
-  @override
-  State<ProgressBarWidget> createState() => _ProgressBarWidgetState();
-}
+  const ProgressBarWidget({
+    super.key,
+    required this.progress,
+    this.direction = .horizontal,
+    this.duration = const Duration(milliseconds: 500),
+  });
 
-class _ProgressBarWidgetState extends State<ProgressBarWidget> {
-  double _value = 0;
-
-  _ProgressBarWidgetState();
-
-  void setValue(double value) {
-    setState(() {
-      _value = value;
-    });
-  }
-
-  void incrementValue() {
-    setState(() {
-      _value += 0.1;
-    });
-  }
-
-  double getValue() {
-    return _value;
-  }
-
-  Widget createProgressIndicator(){
+  Widget createProgressIndicator() {
     return Expanded(
-      child: LinearProgressIndicator(
-        borderRadius: BorderRadius.circular(5),
-        minHeight: 30,
-        //value: (_currentQuestionIndex + 1) / questions.length,
-        value: _value,
-        backgroundColor: ChiwiColors.ALMOND,
-        valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
+      child: TweenAnimationBuilder(
+        tween: Tween(begin: 0, end: progress.clamp(0, 1)),
+        duration: duration,
+        builder: (context, value, widget) {
+          return LinearProgressIndicator(
+            borderRadius: BorderRadius.circular(5),
+            minHeight: 30,
+            value: value.toDouble(),
+            backgroundColor: ChiwiColors.ALMOND,
+            valueColor: AlwaysStoppedAnimation<Color>(ChiwiColors.PISTACHE),
+          );
+        },
       ),
     );
   }
 
-  Widget buildBar(){
+  Widget buildBar() {
     Widget bar = createProgressIndicator();
-    Direction direction = widget.direction;
     switch (direction) {
       case Direction.vertical:
-        return RotatedBox(
-          quarterTurns: -1,
-          child: bar,
-        );
+        return RotatedBox(quarterTurns: -1, child: bar);
       case Direction.horizontal:
         return bar;
     }

@@ -49,6 +49,7 @@ class ReviewerSetupRequester {
     final commandResponse = SetupCommandResponse(
       message: data["message"],
       command: SetupCommandType.values.byName(data["command"]),
+      transcribed: data["transcribed"],
       data: commandData
     );
     onSuccess(response.message, commandResponse);
@@ -59,11 +60,13 @@ class ReviewerSetupRequester {
 class SetupCommandResponse<T> {
   final SetupCommandType command;
   final String message;
+  final String transcribed;
   T? data;
 
   SetupCommandResponse({
     required this.message,
     required this.command,
+    required this.transcribed,
     this.data,
   });
 }
