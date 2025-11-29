@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:chiwi/components/landing_page/voice_input_widgets.dart';
 import 'package:chiwi/recording/recording.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
@@ -17,8 +18,8 @@ class ReviewerMakerPage extends StatefulWidget {
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
 
   String _displayMessage = "";
-
   final Recorder _recorder = Recorder();
+  bool _loadAnimation = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -46,12 +47,19 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                           color: ChiwiColors.ALMOND,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Text(
-                          //replace this with function to show inputs
-                          //text display 
-                          '$_displayMessage',
-                          style: TextStyle(fontSize: 20),
-                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              //replace this with function to show inputs
+                              //text display
+                              '$_displayMessage',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            _loadAnimation
+                            ? LoadingAnimationWidget.staggeredDotsWave(color: ChiwiColors.MATCHA, size: 20)
+                                :SizedBox.shrink(),
+                          ],
+                        )
                       ),
                     ),
                   ),
@@ -77,6 +85,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                     listenButton: () async {
                     Uint8List recordingData = await _recorder.startRecording();
                     setState(() {
+                      _loadAnimation = true;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("stopped"),
@@ -88,6 +97,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                       recordingBytes: recordingData,
                       onSuccess: (message, result) {
                         setState(() {
+                          _loadAnimation = false;
                           _displayMessage =
                               "command: ${result.command}\n${result.message}";
                         });
@@ -107,8 +117,8 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
               flex: 3,
               child: Container(
                 margin: EdgeInsets.all(5),
-                child: Image.network(
-                  'https://i.imgflip.com/77e8vi.png',
+                child: Image.asset(
+                  'lib/assets/chiwi3.png',
                 )
               ),
             )
