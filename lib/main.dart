@@ -1,12 +1,8 @@
-import 'package:chiwi/auth/account.dart';
 import 'package:chiwi/pages/init_page.dart';
-import 'package:chiwi/pages/landing_page.dart';
-import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 void main() {
-  AccountManager.INSTANCE.initUser();
   runApp(const MyApp());
   RendererBinding.instance.ensureSemantics();
 }
@@ -22,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-
+<<<<<<<<< Temporary merge branch 1
+      //home: const LandingPage()//changed this for testing purposes
+      home: const ReviwermakerPage()
+=========
       home: InitPage()
     );
   }

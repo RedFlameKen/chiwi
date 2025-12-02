@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
         child: ListView(
           children: [
             CallToActionWidget(height: ctaHeight),
-            Text("breh"),
+            Text("https://youtu.be/uJhWDkEsGQc?si=rv7Q0lXIoLA73kCI"),
           ],
         ),
       ),

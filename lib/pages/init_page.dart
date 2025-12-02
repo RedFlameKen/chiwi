@@ -12,6 +12,7 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPageState extends State<InitPage> {
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +33,6 @@ class _InitPageState extends State<InitPage> {
         );
       },
       onFail: (message) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message ?? "failed to login")));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

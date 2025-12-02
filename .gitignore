@@ -47,6 +47,9 @@ app.*.map.json
 # ignoring analysis_options.yaml to not enforce preferences
 analysis_options.yaml
 
+### vscode ###
+.vscode/
+
 ### Neovim ###
 .ignore
 
