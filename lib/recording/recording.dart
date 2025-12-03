@@ -74,7 +74,6 @@ class Recorder {
     );
     _recorder.startRecorder(
       codec: .pcm16,
-      // TODO: Create a utility to get AudioContexts using js interop and get its sampleRate and put it here. then x2 on pcmToWaveBuffer() call
       sampleRate: 48000,
       toStream: _streamController!.sink,
     );

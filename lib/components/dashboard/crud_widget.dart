@@ -1,7 +1,9 @@
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/pages/create_reviewer_page.dart';
+import 'package:chiwi/pages/quiz_page.dart';
 import 'package:chiwi/pages/reviwer_maker_page.dart';
 import 'package:chiwi/pages/update_reviewer_page.dart';
+import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 import 'package:chiwi/reviewer/reviewer_requester.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
@@ -19,18 +21,15 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
   @override
   void initState() {
     super.initState();
-    getReviewers();
+    _getReviewers();
   }
 
-  void getReviewers({String? query}) {
+  void _getReviewers({String? query}) {
     _reviewers.clear();
     ReviewerRequester.getReviewers(
       query: query,
       onSuccess: (reviewers) {
         setState(() {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("Reviewers recieved!")));
           _reviewers.addAll(reviewers);
         });
       },
@@ -46,25 +45,31 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('${reviewer.subject}'),
-            Text('${reviewer.flashcardsCount}'),
+            Text('flashcards: ${reviewer.flashcardsCount}'),
           ],
         ),
         onTap: () async {
-          ReviewerSetupRequester.startSetup(
+          ReviewSessionRequester.startReview(
             reviewerId: reviewer.id,
-            onSuccess: (message) {
-              Navigator.push(
+            onSuccess: (message, result) async {
+              bool update = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return ReviewerMakerPage();
+                    return QuizPage(
+                      initResponse: result,
+                      reviewerId: reviewer.id,
+                    );
                   },
                 ),
               );
+              if (update) {
+                _getReviewers();
+              }
             },
             onFail: (message) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message ?? "unable to start setup")),
+                SnackBar(content: Text(message ?? "unable to start review")),
               );
             },
           );
@@ -73,7 +78,37 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
+              icon: Icon(Icons.edit_document),
+              tooltip: "setup flashcards",
+              onPressed: () async {
+                ReviewerSetupRequester.startSetup(
+                  reviewerId: reviewer.id,
+                  onSuccess: (message, reset) async {
+                    bool update = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ReviewerMakerPage();
+                        },
+                      ),
+                    );
+                    if(update){
+                      _getReviewers();
+                    }
+                  },
+                  onFail: (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? "unable to start setup"),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.edit),
+              tooltip: "edit",
               onPressed: () async {
                 Reviewer? updated = await Navigator.push(
                   context,
@@ -96,6 +131,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
             ),
             IconButton(
               icon: Icon(Icons.delete),
+              tooltip: "delete",
               onPressed: () async {
                 await ReviewerRequester.deleteReviewer(
                   id: reviewer.id,
@@ -144,7 +180,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   String searchTerm = _searchController.text;
-                  getReviewers(query: searchTerm);
+                  _getReviewers(query: searchTerm);
                 },
               ),
             ],
@@ -169,7 +205,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               );
 
               if (updated) {
-                getReviewers();
+                _getReviewers();
               }
             },
             text: "Add Reviewer",

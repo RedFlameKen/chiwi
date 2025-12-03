@@ -2,6 +2,7 @@ import 'package:chiwi/auth/user.dart';
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/requests/user_request_data.dart';
 import 'package:chiwi/http/response.dart';
+import 'package:chiwi/http/server_settings.dart';
 
 class AccountManager {
   static final INSTANCE = AccountManager();
@@ -33,9 +34,10 @@ class AccountManager {
     Response response;
     try {
       response = await HttpRequester.post(
-        https: USE_HTTPS,
-        host: BACKEND_SERVER_HOST,
-        noPort: !HOST_HAS_PORT,
+        port: ServerSettings.port,
+        noPort: ServerSettings.port == -1,
+        host: ServerSettings.host,
+        https: ServerSettings.https,
         path: SIGNUP_PATH,
         body: body,
       );
@@ -63,9 +65,10 @@ class AccountManager {
     Response response;
     try {
       response = await HttpRequester.delete(
-        https: USE_HTTPS,
-        host: BACKEND_SERVER_HOST,
-        noPort: !HOST_HAS_PORT,
+        port: ServerSettings.port,
+        noPort: ServerSettings.port == -1,
+        host: ServerSettings.host,
+        https: ServerSettings.https,
         path: SIGNOUT_PATH,
       );
     } catch (e) {
@@ -95,9 +98,10 @@ class AccountManager {
     Response response;
     try {
       response = await HttpRequester.post(
-        https: USE_HTTPS,
-        host: BACKEND_SERVER_HOST,
-        noPort: !HOST_HAS_PORT,
+        port: ServerSettings.port,
+        noPort: ServerSettings.port == -1,
+        host: ServerSettings.host,
+        https: ServerSettings.https,
         path: LOGIN_PATH,
         body: body,
       );
@@ -127,9 +131,10 @@ class AccountManager {
     Response response;
     try {
       response = await HttpRequester.get(
-        https: USE_HTTPS,
-        host: BACKEND_SERVER_HOST,
-        noPort: !HOST_HAS_PORT,
+        port: ServerSettings.port,
+        noPort: ServerSettings.port == -1,
+        host: ServerSettings.host,
+        https: ServerSettings.https,
         path: RELOGIN_PATH,
       );
     } catch (e) {
@@ -162,9 +167,10 @@ class AccountManager {
     Response response;
     try {
       response = await HttpRequester.get(
-        https: USE_HTTPS,
-        host: BACKEND_SERVER_HOST,
-        noPort: !HOST_HAS_PORT,
+        port: ServerSettings.port,
+        noPort: ServerSettings.port == -1,
+        host: ServerSettings.host,
+        https: ServerSettings.https,
         path: LOGOUT_PATH,
       );
     } catch (e) {
@@ -179,5 +185,4 @@ class AccountManager {
     user = null;
     onSuccess!(response.message);
   }
-
 }

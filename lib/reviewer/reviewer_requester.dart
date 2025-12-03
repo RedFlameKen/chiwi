@@ -3,6 +3,7 @@ import 'package:chiwi/auth/user.dart';
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/requests/create_reviewer_request_data.dart';
 import 'package:chiwi/http/response.dart';
+import 'package:chiwi/http/server_settings.dart';
 import 'package:chiwi/reviewer/reviewer.dart';
 
 class ReviewerRequester {
@@ -24,7 +25,10 @@ class ReviewerRequester {
     final response = await HttpRequester.post(
       path: CREATE_ENDPOINT,
       body: reviewerData,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
     if (response.status != 200) {
       if (onFail != null) onFail(response.message!);
@@ -54,7 +58,10 @@ class ReviewerRequester {
     Response response = await HttpRequester.get(
       path: LIST_ENDPOINT,
       queryParams: params,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
     if (response.status != 200) {
       if (onFail != null) onFail(response.message!);
@@ -90,7 +97,10 @@ class ReviewerRequester {
     Response response = await HttpRequester.put(
       path: "$UPDATE_ENDPOINT/$id",
       body: reviewerData,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
     if (response.status != 200) {
       if (onFail != null) onFail(response.message!);
@@ -115,7 +125,10 @@ class ReviewerRequester {
   }) async {
     Response response = await HttpRequester.delete(
       path: "$DELETE_ENDPOINT/$id",
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
     if (response.status != 200) {
       if (onFail != null) onFail(response.message);
