@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/reviewer/flashcard.dart';
@@ -14,6 +16,42 @@ class ReviewerMakerPage extends StatefulWidget {
 }
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
+  void _onCommandSuccess(
+    String? message,
+    SetupCommandResponse result,
+    StreamController<ChatData> chatStream,
+  ) {
+    chatStream.add(ChatData(message: result.transcribed, timeSent: .now()));
+    chatStream.add(
+      ChatData(message: result.message, timeSent: .now(), isMe: false),
+    );
+    debugPrint("received: ${result.message}");
+    if (result.command == .LIST) {
+      chatStream.add(
+        ChatData<List<Flashcard>>(
+          message: result.message,
+          timeSent: .now(),
+          isMe: false,
+          data: result.data,
+        ),
+      );
+      return;
+    }
+    if (result.command == SetupCommandType.FINISH_SETUP) {
+      chatStream.add(
+        ChatData(
+          message: "Closing this page now...",
+          timeSent: .now(),
+          isMe: false,
+        ),
+      );
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pop(context, true);
+      });
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,47 +62,19 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
           children: [
             Expanded(
               child: ListenerPanel(
-                onSubmit: (input, chatStream){
+                onSubmit: (input, chatStream) {
+                  ReviewerSetupRequester.processCommandInput(
+                    input: input,
+                    onSuccess: (message, result) {
+                      _onCommandSuccess(message, result, chatStream);
+                    },
+                  );
                 },
                 onListen: (recordingData, chatStream) {
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
-                      chatStream.add(
-                        ChatData(message: result.transcribed, timeSent: .now()),
-                      );
-                      chatStream.add(
-                        ChatData(
-                          message: result.message,
-                          timeSent: .now(),
-                          isMe: false,
-                        ),
-                      );
-                      debugPrint("received: ${result.message}");
-                      if (result.command == .LIST) {
-                        chatStream.add(
-                          ChatData<List<Flashcard>>(
-                            message: result.message,
-                            timeSent: .now(),
-                            isMe: false,
-                            data: result.data
-                          ),
-                        );
-                        return;
-                      }
-                      if (result.command == SetupCommandType.FINISH_SETUP) {
-                        chatStream.add(
-                          ChatData(
-                            message: "Closing this page now...",
-                            timeSent: .now(),
-                            isMe: false,
-                          ),
-                        );
-                        Future.delayed(Duration(seconds: 3), () {
-                          Navigator.pop(context, true);
-                        });
-                        return;
-                      }
+                      _onCommandSuccess(message, result, chatStream);
                     },
                   );
                 },

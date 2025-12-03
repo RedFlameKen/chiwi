@@ -9,6 +9,7 @@ import 'package:chiwi/reviewer/setup_command_type.dart';
 class ReviewerSetupRequester {
   static const START_ENDPOINT = "/reviewer/setup/start";
   static const COMMAND_ENDPOINT = "/reviewer/setup/command";
+  static const COMMAND_ENDPOINT_INPUT = "/reviewer/setup/command/input";
 
   static Future<void> startSetup({
     required int reviewerId,
@@ -28,6 +29,39 @@ class ReviewerSetupRequester {
     }
 
     onSuccess(response.message);
+  }
+
+  static Future<void> processCommandInput({
+    required String input,
+    required Function(String?, SetupCommandResponse) onSuccess,
+    Function(String?)? onFail,
+  }) async {
+    Response response = await HttpRequester.post(
+      body: {"command": input},
+      path: COMMAND_ENDPOINT_INPUT,
+      https: true,
+    );
+
+    if (response.status != 200) {
+      onFail!(response.message);
+      return;
+    }
+
+    Map<String, dynamic> data = response.data;
+    var commandData;
+    final command = SetupCommandType.values.byName(data["command"]);
+    if (data.containsKey("data")) {
+      commandData = command == .LIST
+          ? _dataToFlashcardsList(data["data"])
+          : data["data"];
+    }
+    final commandResponse = SetupCommandResponse(
+      message: data["message"],
+      command: command,
+      transcribed: data["transcribed"],
+      data: commandData,
+    );
+    onSuccess(response.message, commandResponse);
   }
 
   static Future<void> processCommand({
