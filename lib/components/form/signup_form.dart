@@ -39,16 +39,19 @@ class _SignupFormState extends State<SignupForm> {
             flex: 1,
             child: Row(
               children: [
-                Spacer(),
                 Expanded(
                   flex: 2,
-                  child: Text(
-                    "Create a Username and Password",
-                    textAlign: .center,
-                    style: TextStyle(fontWeight: .bold, fontSize: 36),
+                  child: FittedBox(
+                    child: Padding(
+                      padding: .only(bottom: 15, top: 15, right: 25, left: 25),
+                      child: Text(
+                        "Create a Username and Password",
+                        textAlign: .center,
+                        style: TextStyle(fontWeight: .bold, fontSize: 36),
+                      ),
+                    ),
                   ),
                 ),
-                Spacer(),
               ],
             ),
           ),
@@ -57,7 +60,6 @@ class _SignupFormState extends State<SignupForm> {
             child: Container(
               padding: .only(left: 50, right: 50, top: 25, bottom: 25),
               child: Column(
-                mainAxisSize: .max,
                 mainAxisAlignment: .spaceEvenly,
                 children: [usernameInput, passwordInput, reenterInput],
               ),
@@ -65,8 +67,11 @@ class _SignupFormState extends State<SignupForm> {
           ),
           Expanded(
             flex: 1,
-            child: Center(
-              child: Button(onPressed: onSubmit, text: "Create Account"),
+            child: FittedBox(
+              child: Container(
+                padding: .only(left: 50, right: 50, top: 25, bottom: 25),
+                child: Button(onPressed: onSubmit, text: "Create Account"),
+              ),
             ),
           ),
         ],
@@ -82,8 +87,8 @@ class _SignupFormState extends State<SignupForm> {
         onSuccess: (message) {
           Navigator.pop(context);
           ScaffoldMessenger.of(
-              context,
-              ).showSnackBar(SnackBar(content: Text("signed up!")));
+            context,
+          ).showSnackBar(SnackBar(content: Text("signed up!")));
           dispose();
         },
         onFail: (message) {

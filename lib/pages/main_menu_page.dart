@@ -23,29 +23,33 @@ class MainMenuPage extends StatelessWidget {
               mainAxisSize: .max,
               mainAxisAlignment: .spaceEvenly,
               children: [
-                Button(
-                  text: "View Reviewers",
-                  onPressed: () {
-                    Navigator.push(
+                FittedBox(
+                  child: Button(
+                    text: "View Reviewers",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return DashboardPage();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                FittedBox(
+                  child: Button(text: "Sign Out", onPressed: () {
+                    AccountManager.INSTANCE.signout();
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) {
-                          return DashboardPage();
-                        },
+                        builder: (context) => LandingPage(),
                       ),
+                          (route) => false,
                     );
-                  },
+                  }),
                 ),
-                Button(text: "Sign Out", onPressed: () {
-                  AccountManager.INSTANCE.signout();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LandingPage(),
-                    ),
-                        (route) => false,
-                  );
-                }),
               ],
             ),
           ),
