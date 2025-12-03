@@ -45,7 +45,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('${reviewer.subject}'),
-            Text('${reviewer.flashcardsCount}'),
+            Text('flashcards: ${reviewer.flashcardsCount}'),
           ],
         ),
         onTap: () async {

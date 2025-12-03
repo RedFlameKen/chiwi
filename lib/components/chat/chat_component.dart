@@ -104,9 +104,11 @@ class ChatBubble extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text(chatData.message, 
-                softWrap: true,
-                style: TextStyle(fontSize: 16)),
+                child: SelectionArea(
+                  child: Text(chatData.message, 
+                  softWrap: true,
+                  style: TextStyle(fontSize: 16)),
+                ),
               ),
             ),
           ),
@@ -158,18 +160,20 @@ Widget _buildFlashcardItem(Flashcard flashcard) {
     color: ChiwiColors.VANILLA,
     child: Padding(
       padding: .only(top: 5, bottom: 5, left: 15, right: 15),
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          Text(
-            flashcard.question ?? "no question",
-            style: TextStyle(fontWeight: .bold, color: ChiwiColors.MATCHA),
-          ),
-          Text(
-            flashcard.answers[0].answer ?? "No Answer",
-            style: TextStyle(color: ChiwiColors.CAROB),
-          ),
-        ],
+      child: SelectionArea(
+        child: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              flashcard.question ?? "no question",
+              style: TextStyle(fontWeight: .bold, color: ChiwiColors.MATCHA),
+            ),
+            Text(
+              flashcard.answers[0].answer ?? "No Answer",
+              style: TextStyle(color: ChiwiColors.CAROB),
+            ),
+          ],
+        ),
       ),
     ),
   );
