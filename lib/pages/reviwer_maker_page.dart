@@ -11,13 +11,19 @@ import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class ReviewerMakerPage extends StatefulWidget {
-  const ReviewerMakerPage({super.key});
+  final String initMessage;
+  const ReviewerMakerPage({super.key, required this.initMessage});
 
   @override
   State<StatefulWidget> createState() => _ReviewerMakerPageState();
 }
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void _onCommandSuccess(
     String? message,
     SetupCommandResponse result,
@@ -78,6 +84,25 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
                     },
+                  );
+                },
+                onInit: (chatStream) {
+                chatStream.add(
+                    ChatData(
+                      message: "Let's setup flashcards, woof!",
+                      timeSent: .now(),
+                      isMe: false,
+                    ),
+                  );
+                  if(widget.initMessage.isEmpty){
+                    return;
+                  }
+                  chatStream.add(
+                    ChatData(
+                      message: widget.initMessage,
+                      timeSent: .now(),
+                      isMe: false,
+                    ),
                   );
                 },
               ),

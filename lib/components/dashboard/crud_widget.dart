@@ -88,7 +88,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return ReviewerMakerPage();
+                          return ReviewerMakerPage(initMessage: message ?? "");
                         },
                       ),
                     );
