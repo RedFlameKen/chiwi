@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/response.dart';
+import 'package:chiwi/http/server_settings.dart';
 import 'package:chiwi/reviewer/answer.dart';
 import 'package:chiwi/reviewer/flashcard.dart';
 import 'package:chiwi/reviewer/setup_command_type.dart';
@@ -20,7 +21,10 @@ class ReviewerSetupRequester {
     final response = await HttpRequester.post(
       path: START_ENDPOINT,
       body: body,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
@@ -44,7 +48,10 @@ class ReviewerSetupRequester {
     Response response = await HttpRequester.post(
       body: {"command": input},
       path: COMMAND_ENDPOINT_INPUT,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
@@ -77,8 +84,11 @@ class ReviewerSetupRequester {
     Map<String, Uint8List> files = {"audio": recordingBytes};
     Response response = await HttpRequester.postForm(
       path: COMMAND_ENDPOINT,
-      https: true,
       files: files,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {

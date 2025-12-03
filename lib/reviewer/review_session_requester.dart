@@ -1,4 +1,5 @@
 import 'package:chiwi/http/http_requester.dart';
+import 'package:chiwi/http/server_settings.dart';
 import 'package:chiwi/reviewer/answer.dart';
 import 'package:chiwi/reviewer/flashcard_result.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
@@ -19,7 +20,10 @@ class ReviewSessionRequester {
     final response = await HttpRequester.post(
       path: START_ENDPOINT,
       body: body,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
@@ -57,7 +61,10 @@ class ReviewSessionRequester {
     final response = await HttpRequester.post(
       path: FINISH_ENDPOINT,
       body: body,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
@@ -103,8 +110,11 @@ class ReviewSessionRequester {
     Map<String, Uint8List> files = {"audio": recordingBytes};
     final response = await HttpRequester.postForm(
       path: COMMAND_ENDPOINT,
-      https: true,
       files: files,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
@@ -149,7 +159,10 @@ class ReviewSessionRequester {
     final response = await HttpRequester.post(
       body: {"command": input},
       path: COMMAND_ENDPOINT_INPUT,
-      https: true,
+      port: ServerSettings.port,
+      noPort: ServerSettings.port == -1,
+      host: ServerSettings.host,
+      https: ServerSettings.https,
     );
 
     if (response.status != 200) {
