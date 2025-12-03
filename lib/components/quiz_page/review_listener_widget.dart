@@ -32,22 +32,30 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   void _onCommandSuccess(
     String? message,
     ReviewSessionResponse result,
-    StreamController<ChatData> streamController,
+    StreamController<ChatData> chatStream,
   ) {
+    if (result.command == .FINISH){
+      chatStream.add(
+          ChatData(message: "$message", timeSent: .now(), isMe: false),
+          );
+      chatStream.add(
+        ChatData(
+          message: "Closing this page now...",
+          timeSent: .now(),
+          isMe: false,
+        ),
+      );
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pop(context, true);
+      });
+      return;
+    }
     if (result.command == ReviewCommandType.COMPLETE) {
       ReviewSessionRequester.finishReview(
         reviewerId: widget.reviewerId,
         onSuccess: (message, result) {
           setState(() {
             _curFlashcard++;
-            // streamController.add(
-            //   ChatData(
-            //     message:
-            //         "${result.message}\nYour score is ${result.score}/${result.total}",
-            //     timeSent: .now(),
-            //     isMe: false,
-            //   ),
-            // );
           });
           Navigator.pushReplacement(
             context,
@@ -66,7 +74,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
     }
     if (result.command == ReviewCommandType.MISUNDERSTOOD) {
       setState(() {
-        streamController.add(
+        chatStream.add(
           ChatData(message: "$message", timeSent: .now(), isMe: false),
         );
       });
@@ -84,7 +92,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
     } else
       chatMessage = result.message;
     setState(() {
-      streamController.add(
+      chatStream.add(
         ChatData(message: "$chatMessage", timeSent: .now(), isMe: false),
       );
       _curFlashcard = result.data!.curFlashcard;
