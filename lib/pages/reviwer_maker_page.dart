@@ -24,6 +24,8 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
           children: [
             Expanded(
               child: ListenerPanel(
+                onSubmit: (input, chatStream){
+                },
                 onListen: (recordingData, chatStream) {
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
@@ -59,7 +61,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                           ),
                         );
                         Future.delayed(Duration(seconds: 3), () {
-                          Navigator.pop(context);
+                          Navigator.pop(context, true);
                         });
                         return;
                       }

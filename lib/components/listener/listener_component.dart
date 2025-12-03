@@ -10,11 +10,13 @@ import 'package:flutter/material.dart';
 class ListenerPanel extends StatefulWidget {
   final Function(StreamController<ChatData>)? onInit;
   final Function(Uint8List, StreamController<ChatData>) onListen;
+  final Function(String, StreamController<ChatData>)? onSubmit;
   final String inputHint;
 
   const ListenerPanel({
     super.key,
     required this.onListen,
+    this.onSubmit,
     this.onInit,
     this.inputHint = "Type Questions here...",
   });
@@ -41,6 +43,9 @@ class _ListenerPanelState extends State<ListenerPanel> {
     _chatStreamController.close();
   }
 
+  final TextEditingController _inputController = TextEditingController();
+  final FocusNode _inputFocus = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,6 +61,17 @@ class _ListenerPanelState extends State<ListenerPanel> {
           Container(
             margin: EdgeInsets.all(8),
             child: TextField(
+              focusNode: _inputFocus,
+              controller: _inputController,
+              onSubmitted: (input) {
+                if (widget.onSubmit != null) {
+                  widget.onSubmit!(input, _chatStreamController);
+                }
+                setState(() {
+                  _inputController.clear();
+                });
+                _inputFocus.requestFocus();
+              },
               decoration: InputDecoration(
                 hintText: widget.inputHint,
                 filled: true,

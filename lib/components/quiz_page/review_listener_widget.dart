@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/components/stateful/progress_bar_widget.dart';
+import 'package:chiwi/pages/quiz_score_page.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
@@ -39,15 +40,21 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
         onSuccess: (message, result) {
           setState(() {
             _curFlashcard++;
-            streamController.add(
-              ChatData(
-                message:
-                    "${result.message}\nYour score is ${result.score}/${result.total}",
-                timeSent: .now(),
-                isMe: false,
-              ),
-            );
+            // streamController.add(
+            //   ChatData(
+            //     message:
+            //         "${result.message}\nYour score is ${result.score}/${result.total}",
+            //     timeSent: .now(),
+            //     isMe: false,
+            //   ),
+            // );
           });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuizScorePage(results: result),
+            ),
+          );
         },
         onFail: (message) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -98,11 +105,19 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
         Expanded(
           child: ListenerPanel(
             inputHint: "Enter Answers here...",
-            onListen: (recordingData, streamController) {
+            onSubmit: (input, chatStream) {
+              ReviewSessionRequester.processCommandInput(
+                input: input,
+                onSuccess: (message, result) =>
+                    _onCommandSuccess(message, result, chatStream),
+                onFail: _onCommandFailed,
+              );
+            },
+            onListen: (recordingData, chatStream) {
               ReviewSessionRequester.processCommand(
                 recordingBytes: recordingData,
                 onSuccess: (message, result) =>
-                    _onCommandSuccess(message, result, streamController),
+                    _onCommandSuccess(message, result, chatStream),
                 onFail: _onCommandFailed,
               );
             },

@@ -21,10 +21,10 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
   @override
   void initState() {
     super.initState();
-    getReviewers();
+    _getReviewers();
   }
 
-  void getReviewers({String? query}) {
+  void _getReviewers({String? query}) {
     _reviewers.clear();
     ReviewerRequester.getReviewers(
       query: query,
@@ -51,8 +51,8 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
         onTap: () async {
           ReviewSessionRequester.startReview(
             reviewerId: reviewer.id,
-            onSuccess: (message, result) {
-              Navigator.push(
+            onSuccess: (message, result) async {
+              bool update = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
@@ -63,6 +63,9 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                   },
                 ),
               );
+              if (update) {
+                _getReviewers();
+              }
             },
             onFail: (message) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -80,8 +83,8 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               onPressed: () async {
                 ReviewerSetupRequester.startSetup(
                   reviewerId: reviewer.id,
-                  onSuccess: (message) {
-                    Navigator.push(
+                  onSuccess: (message) async {
+                    bool update = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
@@ -89,6 +92,9 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                         },
                       ),
                     );
+                    if(update){
+                      _getReviewers();
+                    }
                   },
                   onFail: (message) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -174,7 +180,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   String searchTerm = _searchController.text;
-                  getReviewers(query: searchTerm);
+                  _getReviewers(query: searchTerm);
                 },
               ),
             ],
@@ -199,7 +205,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               );
 
               if (updated) {
-                getReviewers();
+                _getReviewers();
               }
             },
             text: "Add Reviewer",

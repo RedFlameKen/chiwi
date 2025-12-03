@@ -94,16 +94,20 @@ class ChatBubble extends StatelessWidget {
     return Row(
       mainAxisAlignment: chatData.isMe ? .start : .end,
       children: [
-        Padding(
-          padding: .all(10),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: .all(.circular(10)),
-              color: chatData.isMe ? ChiwiColors.PISTACHE : ChiwiColors.CHAI,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Text(chatData.message, style: TextStyle(fontSize: 16)),
+        Flexible(
+          child: Padding(
+            padding: .all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: .all(.circular(10)),
+                color: chatData.isMe ? ChiwiColors.PISTACHE : ChiwiColors.CHAI,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(chatData.message, 
+                softWrap: true,
+                style: TextStyle(fontSize: 16)),
+              ),
             ),
           ),
         ),
