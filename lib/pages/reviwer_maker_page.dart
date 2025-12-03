@@ -2,10 +2,6 @@ import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/reviewer/flashcard.dart';
 import 'dart:typed_data';
-
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:chiwi/components/landing_page/voice_input_widgets.dart';
-import 'package:chiwi/recording/recording.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:chiwi/reviewer/setup_command_type.dart';
 import 'package:chiwi/style/colors.dart';
@@ -19,7 +15,6 @@ class ReviewerMakerPage extends StatefulWidget {
 }
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
-  bool _loadAnimation = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,23 +23,15 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            _loadAnimation
-                ? LoadingAnimationWidget.staggeredDotsWave(
-                    color: ChiwiColors.MATCHA,
-                    size: 20,
-                  )
-                : SizedBox.shrink(),
             Expanded(
               child: ListenerPanel(
                 onListen: (recordingData, chatStream) {
                   setState(() {
-                    _loadAnimation = true;
                   });
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
                       setState(() {
-                        _loadAnimation = false;
                       });
                       chatStream.add(
                         ChatData(message: result.transcribed, timeSent: .now()),

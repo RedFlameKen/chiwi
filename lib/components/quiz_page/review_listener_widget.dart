@@ -108,6 +108,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
               ListenerPanel(
                 inputHint: "Enter Answers here...",
                 onListen: (recordingData, streamController) {
+                  _isLoading = true;
                   ReviewSessionRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) =>
