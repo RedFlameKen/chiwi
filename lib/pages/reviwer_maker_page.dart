@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:chiwi/components/chat/chat_component.dart';
+import 'package:chiwi/components/chiwi/chiwi_widget.dart';
+import 'package:chiwi/components/drawer/menu_drawer/menu_drawer.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/reviewer/flashcard.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
@@ -81,13 +83,35 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
               ),
             ),
             Expanded(
-              child: Container(
-                margin: EdgeInsets.all(5),
-                child: Image.network('https://i.imgflip.com/77e8vi.png'),
+              child: Stack(
+                alignment: .center,
+                children: [
+                  ChiwiWidget(),
+                  Align(
+                    alignment: .topRight,
+                    child: Builder(
+                      builder: (context) {
+                        return IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          icon: Icon(Icons.menu, size: 50),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+      endDrawer: MenuDrawer(
+        exitDialogTitle: "Exit Setup",
+        onExit: () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        },
       ),
     );
   }
