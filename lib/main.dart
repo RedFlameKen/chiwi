@@ -1,11 +1,10 @@
-import 'package:chiwi/pages/reviwer_maker_page.dart';
+import 'package:chiwi/pages/init_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(const MyApp());
   RendererBinding.instance.ensureSemantics();
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -19,8 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      //home: const LandingPage()//changed this for testing purposes
-      home: const ReviwermakerPage()
+      home: InitPage()
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:chiwi/pages/login_or_signup.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,15 @@ class CallToActionWidget extends StatelessWidget {
                   backgroundColor: ChiwiColors.MATCHA,
                   padding: .only(top: 25, bottom: 25, left: 150, right: 150),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          LoginOrSignupPage(), //might need to change this so the button can be reused for other stuff
+                    ),
+                  );
+                },
                 child: Text(
                   "Get Started",
                   style: TextStyle(color: ChiwiColors.ALMOND, fontSize: 36),

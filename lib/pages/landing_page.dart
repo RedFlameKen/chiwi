@@ -3,7 +3,7 @@ import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+  LandingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
         child: ListView(
           children: [
             CallToActionWidget(height: ctaHeight),
-            Text("breh"),
+            Text("https://youtu.be/uJhWDkEsGQc?si=rv7Q0lXIoLA73kCI"),
           ],
         ),
       ),

@@ -43,3 +43,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ignoring analysis_options.yaml to not enforce preferences
+analysis_options.yaml
+
+### vscode ###
+.vscode/
+
+### Neovim ###
+.ignore
+
+### Config ###
+keys.json
