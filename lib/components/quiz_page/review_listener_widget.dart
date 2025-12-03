@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
+
 import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/components/stateful/progress_bar_widget.dart';
-import 'package:chiwi/pages/quiz_score_page.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
   final ReviewSessionResponse initResponse;
@@ -20,6 +20,7 @@ class ReviewListenerWidget extends StatefulWidget {
 class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   int _curFlashcard = 0;
   bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +51,9 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
       });
       return;
     }
+    setState(() {
+      _isLoading = false;
+    });
     if (result.command == ReviewCommandType.COMPLETE) {
       ReviewSessionRequester.finishReview(
         reviewerId: widget.reviewerId,
@@ -57,12 +61,6 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
           setState(() {
             _curFlashcard++;
           });
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuizScorePage(results: result),
-            ),
-          );
         },
         onFail: (message) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -100,6 +98,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   }
 
   void _onCommandFailed(String? message) {
+    _isLoading = false;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message ?? "unable to process command")),
     );
@@ -111,24 +110,15 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
       mainAxisSize: .max,
       children: [
         Expanded(
-          child: Column(
+          child: Stack(
             children: [
-              if (_isLoading) LoadingIndicator(),
               ListenerPanel(
                 inputHint: "Enter Answers here...",
-                onSubmit: (input, chatStream) {
-                  ReviewSessionRequester.processCommandInput(
-                    input: input,
-                    onSuccess: (message, result) =>
-                        _onCommandSuccess(message, result, chatStream),
-                    onFail: _onCommandFailed,
-                  );
-                },
-                onListen: (recordingData, chatStream) {
+                onListen: (recordingData, streamController) {
                   ReviewSessionRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) =>
-                        _onCommandSuccess(message, result, chatStream),
+                        _onCommandSuccess(message, result, streamController),
                     onFail: _onCommandFailed,
                   );
                 },
@@ -149,6 +139,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                   );
                 },
               ),
+              _isLoading ? LoadingIndicator() : Container(),
             ],
           ),
         ),
