@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 
 class ListenerPanel extends StatefulWidget {
   final Function(StreamController<ChatData>)? onInit;
-  final Function(Uint8List, StreamController<ChatData>) onListen;
-  final Function(String, StreamController<ChatData>)? onSubmit;
+  final Function(Uint8List, StreamController<ChatData>, Function()) onListen;
+  final Function(String, StreamController<ChatData>, Function())? onSubmit;
+  final Function(Function())? onFinishRecording;
+  final Function(Function())? onStoppedRecording;
   final String inputHint;
 
   const ListenerPanel({
@@ -19,6 +21,8 @@ class ListenerPanel extends StatefulWidget {
     this.onSubmit,
     this.onInit,
     this.inputHint = "Type Questions here...",
+    this.onFinishRecording,
+    this.onStoppedRecording,
   });
 
   @override
@@ -28,6 +32,12 @@ class ListenerPanel extends StatefulWidget {
 class _ListenerPanelState extends State<ListenerPanel> {
   StreamController<ChatData> _chatStreamController = StreamController();
   final Recorder _recorder = Recorder();
+
+  final TextEditingController _inputController = TextEditingController();
+  final FocusNode _inputFocus = FocusNode();
+
+  bool _listenEnabled = true;
+  bool _inputsEnabled = true;
 
   @override
   void initState() {
@@ -42,9 +52,6 @@ class _ListenerPanelState extends State<ListenerPanel> {
     super.dispose();
     _chatStreamController.close();
   }
-
-  final TextEditingController _inputController = TextEditingController();
-  final FocusNode _inputFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +68,17 @@ class _ListenerPanelState extends State<ListenerPanel> {
           Container(
             margin: EdgeInsets.all(8),
             child: TextField(
+              enabled: _listenEnabled,
               focusNode: _inputFocus,
               controller: _inputController,
               onSubmitted: (input) {
                 if (widget.onSubmit != null) {
-                  widget.onSubmit!(input, _chatStreamController);
+                  widget.onSubmit!(input, _chatStreamController, () {
+                    setState(() {
+                      _listenEnabled = true;
+                      _inputsEnabled = true;
+                    });
+                  });
                 }
                 setState(() {
                   _inputController.clear();
@@ -87,21 +100,35 @@ class _ListenerPanelState extends State<ListenerPanel> {
             ),
           ),
           VoiceInputWidgets(
-            listenButton: () async {
-              Uint8List recordingData = await _recorder.startRecording();
-              setState(() {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("stopped"),
-                    duration: Duration(seconds: 1),
-                  ),
-                );
-              });
-              setState(() {
-                widget.onListen(recordingData, _chatStreamController);
-              });
-            },
-            stopButton: () async => await _recorder.stopRecording(),
+            listenButton: !_inputsEnabled
+                ? null
+                : !_listenEnabled
+                ? null
+                : () async {
+                    setState(() {
+                      _listenEnabled = false;
+                    });
+                    Uint8List recordingData = await _recorder.startRecording();
+                    setState(() {
+                      _inputsEnabled = false;
+                    });
+                    setState(() {
+                      widget.onListen(recordingData, _chatStreamController, () {
+                        setState(() {
+                          _listenEnabled = true;
+                          _inputsEnabled = true;
+                        });
+                      });
+                    });
+                  },
+            stopButton: !_inputsEnabled
+                ? null
+                : () async {
+                    await _recorder.stopRecording();
+                    setState(() {
+                      _inputsEnabled = false;
+                    });
+                  },
           ),
           SizedBox(height: 10),
         ],

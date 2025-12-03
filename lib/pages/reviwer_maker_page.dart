@@ -70,19 +70,21 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
           children: [
             Expanded(
               child: ListenerPanel(
-                onSubmit: (input, chatStream) {
+                onSubmit: (input, chatStream, callback) {
                   ReviewerSetupRequester.processCommandInput(
                     input: input,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
+                      callback();
                     },
                   );
                 },
-                onListen: (recordingData, chatStream) {
+                onListen: (recordingData, chatStream, callback) {
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
+                      callback();
                     },
                   );
                 },

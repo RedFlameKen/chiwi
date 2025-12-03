@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class VoiceInputWidgets extends StatelessWidget{
-  final VoidCallback listenButton;
-  final VoidCallback stopButton;
+  final VoidCallback? listenButton;
+  final VoidCallback? stopButton;
 
   const VoiceInputWidgets({
     super.key,

@@ -114,11 +114,23 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
             children: [
               ListenerPanel(
                 inputHint: "Enter Answers here...",
-                onListen: (recordingData, streamController) {
+                onSubmit: (input, chatStream, callback) {
+                  ReviewSessionRequester.processCommandInput(
+                    input: input,
+                    onSuccess: (message, result) {
+                      _onCommandSuccess(message, result, chatStream);
+                      callback();
+                    },
+                    onFail: _onCommandFailed,
+                  );
+                },
+                onListen: (recordingData, streamController, callback) {
                   ReviewSessionRequester.processCommand(
                     recordingBytes: recordingData,
-                    onSuccess: (message, result) =>
-                        _onCommandSuccess(message, result, streamController),
+                    onSuccess: (message, result) {
+                      _onCommandSuccess(message, result, streamController);
+                      callback();
+                    },
                     onFail: _onCommandFailed,
                   );
                 },
@@ -139,7 +151,7 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
                   );
                 },
               ),
-              _isLoading ? LoadingIndicator() : Container(),
+              // _isLoading ? LoadingIndicator() : Container(),
             ],
           ),
         ),
