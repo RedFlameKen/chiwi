@@ -6,7 +6,7 @@ import 'package:chiwi/components/stateful/progress_bar_widget.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
-import 'package:chiwi/components/stateful/loading_indicator_widget.dart';
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
   final ReviewSessionResponse initResponse;
