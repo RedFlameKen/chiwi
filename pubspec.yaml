@@ -56,6 +56,12 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  assets:
+    - lib/assets/chiwi0_updated.png
+    - lib/assets/chiwi1_updated.png
+    - lib/assets/chiwi2_updated.png
+    - lib/assets/chiwi3_updated.png
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

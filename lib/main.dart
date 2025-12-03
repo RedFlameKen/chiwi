@@ -18,10 +18,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-<<<<<<<<< Temporary merge branch 1
-      //home: const LandingPage()//changed this for testing purposes
-      home: const ReviwermakerPage()
-=========
       home: InitPage()
     );
   }
