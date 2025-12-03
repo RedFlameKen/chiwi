@@ -23,11 +23,11 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
   }
 
   TextInput createNameInput() {
-    return TextInput(hint: "Name", textController: _nameController);
+    return TextInput(hint: "Enter Reviewer Name", textController: _nameController);
   }
 
   TextInput createSubjectInput() {
-    return TextInput(hint: "Subject", textController: _subjectController);
+    return TextInput(hint: "Enter Subject", textController: _subjectController);
   }
 
   @override
@@ -36,14 +36,21 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
     _subjectInput = createSubjectInput();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Reviewer"),
-        backgroundColor: ChiwiColors.CHAI,
+        title: Text(
+          "Create Reviewer",
+          style: TextStyle(
+            color: const Color.fromARGB(255, 242, 241, 238),
+          ),
+        ),
+        backgroundColor: ChiwiColors.MATCHA,
       ),
       body: Container(
+        color: ChiwiColors.ALMOND,
         padding: .only(left: 50, right: 50),
         child: ListView(
           scrollDirection: .vertical,
           children: [
+            SizedBox(height: 10), //this is just to add space
             Container(
               child: Column(
                 mainAxisSize: .min,
@@ -60,7 +67,8 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
                 ],
               ),
             ),
-            Button(
+            SizedBox(height: 10),//this is just to add  space 
+            Button(    
               onPressed: () async {
                 await ReviewerRequester.createReviewer(
                   name: _nameController!.text.toString(),
