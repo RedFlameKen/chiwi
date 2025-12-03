@@ -37,7 +37,7 @@ dependencies:
 
   http: ^1.5.0
   cryptography: ^2.7.0
-  flutter_secure_storage: ^9.2.4
+  flutter_sound: ^9.28.0
 
 dev_dependencies:
   flutter_test:

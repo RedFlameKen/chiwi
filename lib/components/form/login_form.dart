@@ -78,9 +78,6 @@ class _LoginFormState extends State<LoginForm> {
         username: usernameInputController.text,
         password: passwordInputController.text,
         onSuccess: (message) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("logged in")));
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -89,7 +86,10 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
           );
-          dispose();
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text("logged in")));
+          disposeInputs();
         },
         onFail: (message) {
           String msg = message ?? "failed to log in";

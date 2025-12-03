@@ -80,10 +80,10 @@ class _SignupFormState extends State<SignupForm> {
         username: usernameInputController.text,
         password: passwordInputController.text,
         onSuccess: (message) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("signed up!")));
           Navigator.pop(context);
+          ScaffoldMessenger.of(
+              context,
+              ).showSnackBar(SnackBar(content: Text("signed up!")));
           dispose();
         },
         onFail: (message) {

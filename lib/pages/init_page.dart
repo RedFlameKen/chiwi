@@ -12,6 +12,7 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPageState extends State<InitPage> {
+
   @override
   void initState() {
     super.initState();
