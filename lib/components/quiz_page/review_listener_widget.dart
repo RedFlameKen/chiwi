@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/components/stateful/progress_bar_widget.dart';
@@ -19,7 +19,7 @@ class ReviewListenerWidget extends StatefulWidget {
 
 class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   int _curFlashcard = 0;
-
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -34,10 +34,10 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
     ReviewSessionResponse result,
     StreamController<ChatData> chatStream,
   ) {
-    if (result.command == .FINISH){
+    if (result.command == .FINISH) {
       chatStream.add(
-          ChatData(message: "$message", timeSent: .now(), isMe: false),
-          );
+        ChatData(message: "$message", timeSent: .now(), isMe: false),
+      );
       chatStream.add(
         ChatData(
           message: "Closing this page now...",
@@ -111,40 +111,45 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
       mainAxisSize: .max,
       children: [
         Expanded(
-          child: ListenerPanel(
-            inputHint: "Enter Answers here...",
-            onSubmit: (input, chatStream) {
-              ReviewSessionRequester.processCommandInput(
-                input: input,
-                onSuccess: (message, result) =>
-                    _onCommandSuccess(message, result, chatStream),
-                onFail: _onCommandFailed,
-              );
-            },
-            onListen: (recordingData, chatStream) {
-              ReviewSessionRequester.processCommand(
-                recordingBytes: recordingData,
-                onSuccess: (message, result) =>
-                    _onCommandSuccess(message, result, chatStream),
-                onFail: _onCommandFailed,
-              );
-            },
-            onInit: (streamController) {
-              streamController.add(
-                ChatData(
-                  message: widget.initResponse.message,
-                  timeSent: .now(),
-                  isMe: false,
-                ),
-              );
-              streamController.add(
-                ChatData(
-                  message: widget.initResponse.data!.question,
-                  timeSent: .now(),
-                  isMe: false,
-                ),
-              );
-            },
+          child: Column(
+            children: [
+              if (_isLoading) LoadingIndicator(),
+              ListenerPanel(
+                inputHint: "Enter Answers here...",
+                onSubmit: (input, chatStream) {
+                  ReviewSessionRequester.processCommandInput(
+                    input: input,
+                    onSuccess: (message, result) =>
+                        _onCommandSuccess(message, result, chatStream),
+                    onFail: _onCommandFailed,
+                  );
+                },
+                onListen: (recordingData, chatStream) {
+                  ReviewSessionRequester.processCommand(
+                    recordingBytes: recordingData,
+                    onSuccess: (message, result) =>
+                        _onCommandSuccess(message, result, chatStream),
+                    onFail: _onCommandFailed,
+                  );
+                },
+                onInit: (streamController) {
+                  streamController.add(
+                    ChatData(
+                      message: widget.initResponse.message,
+                      timeSent: .now(),
+                      isMe: false,
+                    ),
+                  );
+                  streamController.add(
+                    ChatData(
+                      message: widget.initResponse.data!.question,
+                      timeSent: .now(),
+                      isMe: false,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
         ProgressBarWidget(direction: .vertical, progress: _getQuizProgress()),
