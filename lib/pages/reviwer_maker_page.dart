@@ -16,12 +16,9 @@ class ReviewerMakerPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _ReviewerMakerPageState();
-
 }
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
-
-  String _displayMessage = "";
   bool _loadAnimation = false;
   @override
   Widget build(BuildContext context) {
@@ -31,12 +28,24 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            _loadAnimation
+                ? LoadingAnimationWidget.staggeredDotsWave(
+                    color: ChiwiColors.MATCHA,
+                    size: 20,
+                  )
+                : SizedBox.shrink(),
             Expanded(
               child: ListenerPanel(
                 onListen: (recordingData, chatStream) {
+                  setState(() {
+                    _loadAnimation = true;
+                  });
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
+                      setState(() {
+                        _loadAnimation = false;
+                      });
                       chatStream.add(
                         ChatData(message: result.transcribed, timeSent: .now()),
                       );
@@ -54,7 +63,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                             message: result.message,
                             timeSent: .now(),
                             isMe: false,
-                            data: result.data
+                            data: result.data,
                           ),
                         );
                         return;
@@ -80,9 +89,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
             Expanded(
               child: Container(
                 margin: EdgeInsets.all(5),
-                child: Image.asset(
-                  'lib/assets/chiwi3.png',
-                )
+                child: Image.asset('lib/assets/chiwi3.png'),
               ),
             ),
           ],
@@ -92,6 +99,3 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
   }
 }
 
-// _loadAnimation
-// ? LoadingAnimationWidget.staggeredDotsWave(color: ChiwiColors.MATCHA, size: 20)
-//     :SizedBox.shrink(),
