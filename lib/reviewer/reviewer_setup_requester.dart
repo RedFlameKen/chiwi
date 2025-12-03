@@ -13,7 +13,7 @@ class ReviewerSetupRequester {
 
   static Future<void> startSetup({
     required int reviewerId,
-    required Function(String?) onSuccess,
+    required Function(String?, bool) onSuccess,
     Function(String?)? onFail,
   }) async {
     Map<String, int> body = {"reviewer_id": reviewerId};
@@ -28,7 +28,12 @@ class ReviewerSetupRequester {
       return;
     }
 
-    onSuccess(response.message);
+    bool reset = false;
+    if(response.data is bool){
+      reset = response.data;
+    }
+
+    onSuccess(response.message, reset);
   }
 
   static Future<void> processCommandInput({

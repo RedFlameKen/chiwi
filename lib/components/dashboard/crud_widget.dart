@@ -83,7 +83,7 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               onPressed: () async {
                 ReviewerSetupRequester.startSetup(
                   reviewerId: reviewer.id,
-                  onSuccess: (message) async {
+                  onSuccess: (message, reset) async {
                     bool update = await Navigator.push(
                       context,
                       MaterialPageRoute(
