@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:chiwi/http/http_requester.dart';
 import 'package:chiwi/http/response.dart';
+import 'package:chiwi/reviewer/answer.dart';
+import 'package:chiwi/reviewer/flashcard.dart';
 import 'package:chiwi/reviewer/setup_command_type.dart';
 
 class ReviewerSetupRequester {
@@ -14,7 +16,11 @@ class ReviewerSetupRequester {
     Function(String?)? onFail,
   }) async {
     Map<String, int> body = {"reviewer_id": reviewerId};
-    final response = await HttpRequester.post(path: START_ENDPOINT, body: body, https: true);
+    final response = await HttpRequester.post(
+      path: START_ENDPOINT,
+      body: body,
+      https: true,
+    );
 
     if (response.status != 200) {
       onFail!(response.message);
@@ -43,18 +49,40 @@ class ReviewerSetupRequester {
 
     Map<String, dynamic> data = response.data;
     var commandData;
-    if(data.containsKey("data")){
-      commandData = data["data"];
+    final command = SetupCommandType.values.byName(data["command"]);
+    if (data.containsKey("data")) {
+      commandData = command == .LIST
+          ? _dataToFlashcardsList(data["data"])
+          : data["data"];
     }
     final commandResponse = SetupCommandResponse(
       message: data["message"],
-      command: SetupCommandType.values.byName(data["command"]),
+      command: command,
       transcribed: data["transcribed"],
-      data: commandData
+      data: commandData,
     );
     onSuccess(response.message, commandResponse);
-
   }
+}
+
+List<Flashcard> _dataToFlashcardsList(List<dynamic> data) {
+  return List.generate(data.length, (index) {
+    final map = data[index];
+    return Flashcard(
+      id: map["flashcard_id"],
+      question: map["question"],
+      type: FlashcardType.values.byName(map["flashcard_type"]),
+      dateCreated: DateTime.parse(map["date_created"]),
+      dateModified: DateTime.parse(map["date_modified"]),
+      answers: _dataToAnswersList(map["answers"]),
+    );
+  });
+}
+
+List<Answer> _dataToAnswersList(List<dynamic> data) {
+  return List.generate(data.length, (index) {
+    return Answer(id: data[index]["id"], answer: data[index]["answer"]);
+  });
 }
 
 class SetupCommandResponse<T> {

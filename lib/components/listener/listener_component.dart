@@ -36,6 +36,12 @@ class _ListenerPanelState extends State<ListenerPanel> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _chatStreamController.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: ChiwiColors.MATCHA,
