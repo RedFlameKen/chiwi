@@ -5,6 +5,6 @@ class ChiwiWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(image: NetworkImage("https://i.imgflip.com/77e8vi.png"));
+    return Image.asset('lib/assets/chiwi2.png');
   }
 }

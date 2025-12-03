@@ -7,6 +7,7 @@ import 'package:chiwi/pages/quiz_score_page.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
   final ReviewSessionResponse initResponse;
@@ -19,6 +20,7 @@ class ReviewListenerWidget extends StatefulWidget {
 
 class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   int _curFlashcard = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -34,6 +36,9 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
     ReviewSessionResponse result,
     StreamController<ChatData> streamController,
   ) {
+    setState(() {
+      _isLoading = false;
+    });
     if (result.command == ReviewCommandType.COMPLETE) {
       ReviewSessionRequester.finishReview(
         reviewerId: widget.reviewerId,
