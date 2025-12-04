@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
 import 'package:chiwi/components/stateful/progress_bar_widget.dart';
+import 'package:chiwi/pages/quiz_score_page.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,12 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
           setState(() {
             _curFlashcard++;
           });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuizScorePage(results: result),
+            ),
+          );
         },
         onFail: (message) {
           ScaffoldMessenger.of(context).showSnackBar(
