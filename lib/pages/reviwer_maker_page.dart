@@ -4,6 +4,7 @@ import 'package:chiwi/components/chat/chat_component.dart';
 import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/drawer/menu_drawer/menu_drawer.dart';
 import 'package:chiwi/components/listener/listener_component.dart';
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 import 'package:chiwi/reviewer/flashcard.dart';
 import 'package:chiwi/reviewer/reviewer_setup_requester.dart';
 import 'package:chiwi/reviewer/setup_command_type.dart';
@@ -19,6 +20,8 @@ class ReviewerMakerPage extends StatefulWidget {
 }
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -71,32 +74,44 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
             Expanded(
               child: ListenerPanel(
                 onSubmit: (input, chatStream, callback) {
+                  setState(() {
+                    _isLoading = true;
+                  });
                   ReviewerSetupRequester.processCommandInput(
                     input: input,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
                       callback();
+                      setState(() {
+                        _isLoading = false;
+                      });
                     },
                   );
                 },
                 onListen: (recordingData, chatStream, callback) {
+                  setState(() {
+                    _isLoading = true;
+                  });
                   ReviewerSetupRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
                       callback();
+                      setState(() {
+                        _isLoading = false;
+                      });
                     },
                   );
                 },
                 onInit: (chatStream) {
-                chatStream.add(
+                  chatStream.add(
                     ChatData(
                       message: "Let's setup flashcards, woof!",
                       timeSent: .now(),
                       isMe: false,
                     ),
                   );
-                  if(widget.initMessage.isEmpty){
+                  if (widget.initMessage.isEmpty) {
                     return;
                   }
                   chatStream.add(
@@ -114,6 +129,15 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                 alignment: .center,
                 children: [
                   ChiwiWidget(),
+                  if (_isLoading)
+                    Column(
+                      children: [
+                        Expanded(child: LoadingIndicator()),
+                        Expanded(child: Container()),
+                      ],
+                    )
+                  else
+                    Container(),
                   Align(
                     alignment: .topRight,
                     child: Builder(
