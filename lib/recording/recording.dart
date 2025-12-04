@@ -51,7 +51,7 @@ class Recorder {
         _silenceTime = curTime;
       }
     } else {
-      if (curTime.difference(_silenceTime!).inMilliseconds >= 1500) {
+      if (curTime.difference(_silenceTime!).inMilliseconds >= 1000) {
         if (event.decibels! <= SILENCE_THRESHOLD) {
           stopRecording();
           return;
