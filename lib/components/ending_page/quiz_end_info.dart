@@ -50,13 +50,12 @@ class QuizEndInfo extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(),
-              FittedBox(
-                child: ChiwiWidget(assetPath: "lib/assets/chiwi1_updated.png"),
-              ),
-              Button(onPressed: (){
-                Navigator.pop(context, true);
-              }, text: "OK")
+              Flexible(child: ChiwiWidget(assetPath: "lib/assets/chiwi1_updated.png")),
+              Flexible(
+                child: Button(onPressed: (){
+                  Navigator.pop(context, true);
+                }, text: "OK"),
+              )
             ],
           ),
         ),
