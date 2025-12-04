@@ -45,7 +45,7 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
         backgroundColor: ChiwiColors.MATCHA,
       ),
       body: Container(
-        color: ChiwiColors.ALMOND,
+        color: const Color.fromARGB(255, 226, 229, 216),
         padding: .only(left: 50, right: 50),
         child: ListView(
           scrollDirection: .vertical,
