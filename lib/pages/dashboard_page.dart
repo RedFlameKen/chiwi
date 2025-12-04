@@ -9,13 +9,24 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reviewers'),
-        backgroundColor: ChiwiColors.CHAI,
+        centerTitle: true,
+        title: Text(
+          'REVIEWERS',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 24,
+            letterSpacing: 3,
+            color: const Color.fromARGB(255, 247, 244, 240)
+          ),
+        ),
+        backgroundColor: ChiwiColors.MATCHA,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [ChiwiColors.VANILLA, ChiwiColors.ALMOND],
+            colors: [const Color.fromARGB(255, 214, 220, 192), ChiwiColors.ALMOND],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight
           ),
         ),
         child: ReviewerDashboard(),

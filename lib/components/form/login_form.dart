@@ -40,10 +40,12 @@ class _LoginFormState extends State<LoginForm> {
                 Spacer(),
                 Expanded(
                   flex: 2,
-                  child: Text(
-                    "Welcome Back!",
-                    textAlign: .center,
-                    style: TextStyle(fontWeight: .bold, fontSize: 36),
+                  child: FittedBox(
+                    child: Text(
+                      "Welcome Back!",
+                      textAlign: .center,
+                      style: TextStyle(fontWeight: .bold, fontSize: 36),
+                    ),
                   ),
                 ),
                 Spacer(),
@@ -63,8 +65,11 @@ class _LoginFormState extends State<LoginForm> {
           ),
           Expanded(
             flex: 1,
-            child: Center(
-              child: Button(onPressed: onSubmit, text: "Log In"),
+            child: FittedBox(
+              child: Padding(
+                padding: .only(left: 25, right: 25, top: 15, bottom: 15),
+                child: Button(onPressed: onSubmit, text: "Log In"),
+              ),
             ),
           ),
         ],
@@ -125,5 +130,4 @@ class _LoginFormState extends State<LoginForm> {
       },
     );
   }
-
 }

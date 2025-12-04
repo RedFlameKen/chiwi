@@ -28,9 +28,9 @@ class _TextInputState extends State<TextInput> {
             : Text(
                 widget.hint!,
                 textAlign: .center,
-                style: TextStyle(color: ChiwiColors.SERENE_2, fontSize: 24),
+                style: TextStyle(color: const Color.fromARGB(255, 156, 170, 156), fontSize: 23),
               ),
-        fillColor: ChiwiColors.SERENE_0,
+        fillColor: const Color.fromARGB(255, 235, 246, 239),
         filled: true,
       ),
     );
