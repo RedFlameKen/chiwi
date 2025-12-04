@@ -37,7 +37,6 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
     chatStream.add(
       ChatData(message: result.message, timeSent: .now(), isMe: false),
     );
-    debugPrint("received: ${result.message}");
     if (result.command == .LIST) {
       chatStream.add(
         ChatData<List<Flashcard>>(

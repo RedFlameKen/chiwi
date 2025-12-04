@@ -28,7 +28,7 @@ jobs:
           channel: master
 
       - name: Build Flutter App
-        run: flutter build web --base-href="/chiwi/"
+        run: flutter build web --base-href="/chiwi/" --debug
 
       - name: Upload files
         uses: actions/upload-pages-artifact@v4
