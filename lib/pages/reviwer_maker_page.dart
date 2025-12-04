@@ -21,6 +21,7 @@ class ReviewerMakerPage extends StatefulWidget {
 
 class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
   bool _isLoading = false;
+  bool _ruding = false;
 
   @override
   void initState() {
@@ -128,7 +129,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
               child: Stack(
                 alignment: .center,
                 children: [
-                  ChiwiWidget(),
+                  ChiwiWidget(assetPath: _ruding ? "lib/assets/chiwi2_updated.png" : null),
                   if (_isLoading)
                     Column(
                       children: [

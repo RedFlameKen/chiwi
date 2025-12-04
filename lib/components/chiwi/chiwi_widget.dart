@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ChiwiWidget extends StatelessWidget {
-  const ChiwiWidget({super.key});
+  final String? assetPath;
+  const ChiwiWidget({super.key, this.assetPath});
 
   @override
   Widget build(BuildContext context) {
-    return Image(image: AssetImage('lib/assets/chiwi1_updated.png'));
+    return Image(
+      image: AssetImage(assetPath ?? "lib/assets/chiwi3_updated.png"),
+    );
   }
 }
