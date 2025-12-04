@@ -10,7 +10,7 @@ class LoadingIndicator extends StatelessWidget {
     return Container(
         child: LoadingAnimationWidget.staggeredDotsWave(
           color: ChiwiColors.MATCHA,
-          size: 200,
+          size: 100,
         ),
       );
   }
