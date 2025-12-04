@@ -1,3 +1,4 @@
+import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/pages/login_or_signup.dart';
 import 'package:chiwi/style/colors.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,7 @@ class CallToActionWidget extends StatelessWidget {
                 mainAxisSize: .min,
                 mainAxisAlignment: .spaceAround,
                 children: [
-                  Image(
-                    fit: .cover,
-                    image: NetworkImage("https://i.imgflip.com/77e8vi.png"),
-                  ),
+                  ChiwiWidget(assetPath: "lib/assets/chiwi1_updated.png"),
                   Text("CHIWI AI", style: TextStyle(fontSize: 50)),
                 ],
               ),
