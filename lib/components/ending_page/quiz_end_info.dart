@@ -1,3 +1,4 @@
+import 'package:chiwi/components/chiwi/chiwi_widget.dart';
 import 'package:chiwi/components/input/button.dart';
 import 'package:chiwi/reviewer/answer.dart';
 import 'package:chiwi/reviewer/answer_state.dart';
@@ -51,10 +52,7 @@ class QuizEndInfo extends StatelessWidget {
               ),
               SizedBox(),
               FittedBox(
-                child: Image.network(
-                  "https://i.imgflip.com/77e8vi.png",
-                  fit: BoxFit.cover,
-                ),
+                child: ChiwiWidget(assetPath: "lib/assets/chiwi1_updated.png"),
               ),
               Button(onPressed: (){
                 Navigator.pop(context, true);
