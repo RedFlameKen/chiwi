@@ -33,7 +33,7 @@ class ReviewerSetupRequester {
     }
 
     bool reset = false;
-    if(response.data is bool){
+    if (response.data is bool) {
       reset = response.data;
     }
 
@@ -61,7 +61,10 @@ class ReviewerSetupRequester {
 
     Map<String, dynamic> data = response.data;
     var commandData;
-    final command = SetupCommandType.values.byName(data["command"]);
+    final command =
+        SetupCommandType.values.asNameMap().containsKey(data["command"])
+        ? SetupCommandType.values.byName(data["command"])
+        : SetupCommandType.MSC;
     if (data.containsKey("data")) {
       commandData = command == .LIST
           ? _dataToFlashcardsList(data["data"])

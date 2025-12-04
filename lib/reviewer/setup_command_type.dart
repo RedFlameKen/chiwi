@@ -4,4 +4,5 @@ enum SetupCommandType {
   FINISH_SETUP,
   LIST,
   MISUNDERSTOOD,
+  MSC
 }
