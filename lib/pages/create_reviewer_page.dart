@@ -50,7 +50,7 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
         child: ListView(
           scrollDirection: .vertical,
           children: [
-            SizedBox(height: 10), //this is just to add space
+            SizedBox(height: 10), //this is just to   add space
             Container(
               child: Column(
                 mainAxisSize: .min,
