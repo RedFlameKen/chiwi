@@ -46,7 +46,6 @@ class _QuizPageState extends State<QuizPage> {
                 ChiwiWidget(),
                 if (_isLoading) Column(
                   children: [
-                    Expanded(child: LoadingIndicator()),
                     Expanded(child: Container()),
                   ],
                 ) else Container(),
