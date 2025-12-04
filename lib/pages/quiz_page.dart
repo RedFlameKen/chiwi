@@ -1,4 +1,5 @@
 import 'package:chiwi/components/drawer/menu_drawer/menu_drawer.dart';
+import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
 import 'package:chiwi/components/chiwi/chiwi_widget.dart';
@@ -18,6 +19,14 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  bool _isLoading = false;
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +34,7 @@ class _QuizPageState extends State<QuizPage> {
         children: [
           Expanded(
             child: ReviewListenerWidget(
+              onLoadingChanged: _setLoading,
               initResponse: widget.initResponse,
               reviewerId: widget.reviewerId,
             ),
@@ -34,6 +44,12 @@ class _QuizPageState extends State<QuizPage> {
               alignment: .center,
               children: [
                 ChiwiWidget(),
+                if (_isLoading) Column(
+                  children: [
+                    Expanded(child: LoadingIndicator()),
+                    Expanded(child: Container()),
+                  ],
+                ) else Container(),
                 Align(
                   alignment: .topRight,
                   child: Builder(

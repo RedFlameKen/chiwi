@@ -6,12 +6,16 @@ import 'package:chiwi/components/stateful/progress_bar_widget.dart';
 import 'package:chiwi/reviewer/review_command_type.dart';
 import 'package:chiwi/reviewer/review_session_requester.dart';
 import 'package:flutter/material.dart';
-import 'package:chiwi/components/stateless/loading_indicator_widget.dart';
 
 class ReviewListenerWidget extends StatefulWidget {
   final ReviewSessionResponse initResponse;
   final int reviewerId;
-  ReviewListenerWidget({required this.reviewerId, required this.initResponse});
+  final Function(bool)? onLoadingChanged;
+  ReviewListenerWidget({
+    required this.reviewerId,
+    required this.initResponse,
+    this.onLoadingChanged,
+  });
 
   @override
   ReviewListenerWidgetState createState() => ReviewListenerWidgetState();
@@ -19,7 +23,6 @@ class ReviewListenerWidget extends StatefulWidget {
 
 class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   int _curFlashcard = 0;
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -51,9 +54,6 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
       });
       return;
     }
-    setState(() {
-      _isLoading = false;
-    });
     if (result.command == ReviewCommandType.COMPLETE) {
       ReviewSessionRequester.finishReview(
         reviewerId: widget.reviewerId,
@@ -98,7 +98,6 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   }
 
   void _onCommandFailed(String? message) {
-    _isLoading = false;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message ?? "unable to process command")),
     );
@@ -115,21 +114,33 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
               ListenerPanel(
                 inputHint: "Enter Answers here...",
                 onSubmit: (input, chatStream, callback) {
+                  if (widget.onLoadingChanged != null) {
+                    widget.onLoadingChanged!(true);
+                  }
                   ReviewSessionRequester.processCommandInput(
                     input: input,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, chatStream);
                       callback();
+                      if (widget.onLoadingChanged != null) {
+                        widget.onLoadingChanged!(false);
+                      }
                     },
                     onFail: _onCommandFailed,
                   );
                 },
                 onListen: (recordingData, streamController, callback) {
+                  if (widget.onLoadingChanged != null) {
+                    widget.onLoadingChanged!(true);
+                  }
                   ReviewSessionRequester.processCommand(
                     recordingBytes: recordingData,
                     onSuccess: (message, result) {
                       _onCommandSuccess(message, result, streamController);
                       callback();
+                      if (widget.onLoadingChanged != null) {
+                        widget.onLoadingChanged!(false);
+                      }
                     },
                     onFail: _onCommandFailed,
                   );
