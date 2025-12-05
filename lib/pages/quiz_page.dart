@@ -48,6 +48,7 @@ class _QuizPageState extends State<QuizPage> {
                   children: [
                     Expanded(child: LoadingIndicator()),
                     Expanded(child: Container()),
+                    Expanded(child: Container()),
                   ],
                 ) else Container(),
                 Align(
