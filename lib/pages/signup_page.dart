@@ -13,7 +13,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return TwoSectionPage(
       leftChild: SignupForm(),
-      rightChild: ChiwiWidget(),
+      rightChild: Center(child: ChiwiWidget()),
     );
   }
 }

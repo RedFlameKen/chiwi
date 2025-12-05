@@ -14,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return TwoSectionPage(
       leftChild: LoginForm(),
-      rightChild: ChiwiWidget(),
+      rightChild: Center(child: ChiwiWidget()),
     );
   }
 }
