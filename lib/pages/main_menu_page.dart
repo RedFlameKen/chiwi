@@ -56,7 +56,7 @@ class MainMenuPage extends StatelessWidget {
           Spacer(flex: 1),
         ],
       ),
-      rightChild: ChiwiWidget(),
+      rightChild: Center(child: ChiwiWidget()),
     );
   }
 }
