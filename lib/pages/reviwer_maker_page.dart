@@ -134,6 +134,7 @@ class _ReviewerMakerPageState extends State<ReviewerMakerPage> {
                       children: [
                         Expanded(child: LoadingIndicator()),
                         Expanded(child: Container()),
+                        Expanded(child: Container()),
                       ],
                     )
                   else
