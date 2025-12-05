@@ -68,9 +68,11 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
               }
             },
             onFail: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message ?? "unable to start review")),
-              );
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(
+                  SnackBar(content: Text(message ?? "unable to start review")),
+                );
             },
           );
         },
@@ -92,16 +94,18 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                         },
                       ),
                     );
-                    if(update){
+                    if (update) {
                       _getReviewers();
                     }
                   },
                   onFail: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message ?? "unable to start setup"),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(message ?? "unable to start setup"),
+                        ),
+                      );
                   },
                 );
               },
@@ -139,16 +143,20 @@ class _ReviewerDashboard extends State<ReviewerDashboard> {
                     setState(() {
                       _reviewers.remove(reviewer);
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message ?? "Reviewer deleted!")),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(content: Text(message ?? "Reviewer deleted!")),
+                      );
                   },
                   onFail: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message ?? "Failed to delete reviewer"),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(message ?? "Failed to delete reviewer"),
+                        ),
+                      );
                   },
                 );
               },

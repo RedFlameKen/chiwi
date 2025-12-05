@@ -91,16 +91,16 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
           );
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("logged in")));
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(content: Text("logged in")));
           disposeInputs();
         },
         onFail: (message) {
           String msg = message ?? "failed to log in";
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(content: Text(msg)));
         },
       );
     }

@@ -77,16 +77,20 @@ class _UpdateReviewerPageState extends State<UpdateReviewerPage> {
                   subject: _subjectController!.text.toString(),
                   onSuccess: (reviewer) {
                     Navigator.pop(context, reviewer);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Reviewer updated!")),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(content: Text("Reviewer updated!")),
+                      );
                   },
                   onFail: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(message ?? "Failed to update reviewer"),
-                      ),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(message ?? "Failed to update reviewer"),
+                        ),
+                      );
                   },
                 );
               },

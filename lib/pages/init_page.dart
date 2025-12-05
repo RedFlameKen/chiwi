@@ -12,7 +12,6 @@ class InitPage extends StatefulWidget {
 }
 
 class _InitPageState extends State<InitPage> {
-
   @override
   void initState() {
     super.initState();
@@ -24,9 +23,9 @@ class _InitPageState extends State<InitPage> {
   Future<void> _init() async {
     await AccountManager.INSTANCE.loginWithAuthToken(
       onSuccess: (message) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message ?? "logged in")));
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(message ?? "logged in")));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainMenuPage()),

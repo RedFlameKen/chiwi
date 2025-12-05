@@ -70,9 +70,11 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
           );
         },
         onFail: (message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message ?? "unable to process command")),
-          );
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(
+              SnackBar(content: Text(message ?? "unable to process command")),
+            );
         },
       );
       return;
@@ -105,9 +107,11 @@ class ReviewListenerWidgetState extends State<ReviewListenerWidget> {
   }
 
   void _onCommandFailed(String? message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message ?? "unable to process command")),
-    );
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(content: Text(message ?? "unable to process command")),
+      );
   }
 
   @override

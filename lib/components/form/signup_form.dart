@@ -86,16 +86,16 @@ class _SignupFormState extends State<SignupForm> {
         password: passwordInputController.text,
         onSuccess: (message) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("signed up!")));
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(content: Text("signed up!")));
           dispose();
         },
         onFail: (message) {
           String msg = message ?? "failed to sign up";
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(msg)));
+          ScaffoldMessenger.of(context)
+            ..clearSnackBars()
+            ..showSnackBar(SnackBar(content: Text(msg)));
         },
       );
     }

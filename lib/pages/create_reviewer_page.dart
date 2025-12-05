@@ -23,7 +23,10 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
   }
 
   TextInput createNameInput() {
-    return TextInput(hint: "Enter Reviewer Name", textController: _nameController);
+    return TextInput(
+      hint: "Enter Reviewer Name",
+      textController: _nameController,
+    );
   }
 
   TextInput createSubjectInput() {
@@ -38,9 +41,7 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
       appBar: AppBar(
         title: Text(
           "Create Reviewer",
-          style: TextStyle(
-            color: const Color.fromARGB(255, 242, 241, 238),
-          ),
+          style: TextStyle(color: const Color.fromARGB(255, 242, 241, 238)),
         ),
         backgroundColor: ChiwiColors.MATCHA,
       ),
@@ -67,20 +68,24 @@ class _CreateReviewerPageState extends State<CreateReviewerPage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),//this is just to add  space 
-            Button(    
+            SizedBox(height: 10), //this is just to add  space
+            Button(
               onPressed: () async {
                 await ReviewerRequester.createReviewer(
                   name: _nameController!.text.toString(),
                   subject: _subjectController!.text.toString(),
                   onSuccess: (message) {
                     Navigator.pop(context, true);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message ?? "Reviewer created!")),
-                    );
+                    ScaffoldMessenger.of(context)
+                      ..clearSnackBars()
+                      ..showSnackBar(
+                        SnackBar(content: Text(message ?? "Reviewer created!")),
+                      );
                   },
                   onFail: (message) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    ScaffoldMessenger.of(context)
+                    ..clearSnackBars()
+                    ..showSnackBar(
                       SnackBar(
                         content: Text(message ?? "Failed to create reviewer"),
                       ),
